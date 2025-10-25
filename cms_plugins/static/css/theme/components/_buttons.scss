@@ -1,0 +1,100 @@
+// Button Components
+@use '../base/variables';
+@use '../base/mixins';
+
+// Base button styles
+.btn {
+  @include mixins.button-base;
+  padding: variables.$spacing-3 variables.$spacing-6;
+  font-size: variables.$font-size-base;
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-2 variables.$spacing-4;
+    font-size: variables.$font-size-sm;
+  }
+}
+
+// Button sizes
+.btn-lg {
+  padding: variables.$spacing-4 variables.$spacing-8;
+  font-size: variables.$font-size-lg;
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-3 variables.$spacing-6;
+    font-size: variables.$font-size-base;
+  }
+}
+
+.btn-sm {
+  padding: variables.$spacing-2 variables.$spacing-4;
+  font-size: variables.$font-size-sm;
+}
+
+// Button variants
+.btn-primary {
+  @include mixins.button-primary;
+}
+
+.btn-secondary {
+  @include mixins.button-secondary;
+}
+
+.btn-accent {
+  @include mixins.button-accent;
+}
+
+.btn-success {
+  @include mixins.button-success;
+}
+
+.btn-danger {
+  @include mixins.button-danger;
+}
+
+.btn-outline-primary {
+  @include mixins.button-outline-primary;
+}
+
+.btn-outline-secondary {
+  @include mixins.button-outline-secondary;
+}
+
+.btn-outline-accent {
+  @include mixins.button-outline-accent;
+}
+
+// Button groups
+.btn-group {
+  display: inline-flex;
+  vertical-align: middle;
+  
+  .btn {
+    position: relative;
+    flex: 1 1 auto;
+    border-radius: 0;
+    
+    &:first-child {
+      border-top-left-radius: variables.$border-radius-md;
+      border-bottom-left-radius: variables.$border-radius-md;
+    }
+    
+    &:last-child {
+      border-top-right-radius: variables.$border-radius-md;
+      border-bottom-right-radius: variables.$border-radius-md;
+    }
+    
+    &:not(:first-child) {
+      margin-left: -1px;
+    }
+  }
+}
+
+// Block buttons
+.btn-block {
+  display: block;
+  width: 100%;
+  
+  + .btn-block {
+    margin-top: variables.$spacing-2;
+  }
+}

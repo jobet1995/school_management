@@ -1,0 +1,219 @@
+// Footer
+@use '../base/variables';
+@use '../base/mixins';
+
+// Footer base styles
+.footer {
+  background-color: variables.$color-text-primary; // #111827
+  color: variables.$color-secondary; // #F3F4F6
+  padding: variables.$spacing-8 0;
+  margin-top: auto;
+  
+  a {
+    color: variables.$color-secondary; // #F3F4F6
+    text-decoration: none;
+    transition: variables.$transition-fast;
+    
+    &:hover {
+      color: variables.$color-accent; // #F59E0B
+      text-decoration: underline;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: variables.$bg-primary;
+  }
+  
+  p {
+    color: variables.$color-secondary;
+  }
+}
+
+// Footer container
+.footer-container {
+  max-width: variables.$container-desktop;
+  margin: 0 auto;
+  padding: 0 variables.$spacing-4;
+  
+  @include mixins.tablet {
+    padding: 0 variables.$spacing-6;
+  }
+  
+  @include mixins.desktop {
+    padding: 0 variables.$spacing-8;
+  }
+}
+
+// Footer widgets
+.footer-widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: variables.$spacing-8;
+  margin-bottom: variables.$spacing-8;
+  
+  @include mixins.mobile {
+    grid-template-columns: 1fr;
+    gap: variables.$spacing-6;
+  }
+}
+
+// Footer widget
+.footer-widget {
+  h3 {
+    font-size: variables.$font-size-lg;
+    margin-bottom: variables.$spacing-4;
+    position: relative;
+    padding-bottom: variables.$spacing-2;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background-color: variables.$color-accent;
+    }
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      margin-bottom: variables.$spacing-3;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Footer links
+.footer-links {
+  a {
+    display: block;
+    padding: variables.$spacing-2 0;
+    transition: variables.$transition-fast;
+    
+    &:hover {
+      color: variables.$color-accent;
+      text-decoration: none;
+      padding-left: variables.$spacing-2;
+    }
+  }
+}
+
+// Social icons
+.social-icons {
+  display: flex;
+  gap: variables.$spacing-4;
+  margin-top: variables.$spacing-4;
+  
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba(variables.$color-secondary, 0.1);
+    color: variables.$color-secondary;
+    font-size: variables.$font-size-lg;
+    transition: variables.$transition-fast;
+    
+    &:hover {
+      background-color: variables.$color-accent;
+      color: variables.$bg-primary;
+      transform: translateY(-3px);
+    }
+  }
+}
+
+// Footer bottom
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: variables.$spacing-6;
+  border-top: 1px solid rgba(variables.$color-secondary, 0.1);
+  
+  @include mixins.tablet {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+// Footer copyright
+.footer-copyright {
+  margin-bottom: variables.$spacing-4;
+  
+  @include mixins.tablet {
+    margin-bottom: 0;
+  }
+}
+
+// Footer nav
+.footer-nav {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: variables.$spacing-4;
+    
+    @include mixins.mobile {
+      gap: variables.$spacing-3;
+    }
+  }
+  
+  a {
+    display: block;
+    padding: variables.$spacing-1 0;
+    transition: variables.$transition-fast;
+    
+    &:hover {
+      color: variables.$color-accent;
+      text-decoration: none;
+    }
+  }
+}
+
+// Back to top button
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: variables.$color-primary;
+  color: variables.$bg-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: variables.$font-size-lg;
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: variables.$transition-normal;
+  z-index: variables.$z-index-tooltip;
+  box-shadow: variables.$shadow-lg;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  &:hover {
+    background-color: variables.$color-accent;
+    color: variables.$bg-primary;
+    transform: translateY(-3px);
+  }
+}

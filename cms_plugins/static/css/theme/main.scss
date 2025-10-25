@@ -1,0 +1,23 @@
+// Main Theme Entry Point
+// Import all partials in the correct order
+
+// Base
+@use 'base/variables';
+@use 'base/mixins';
+@use 'base/reset';
+@use 'base/typography';
+
+// Components
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/forms';
+@use 'components/navbar';
+@use 'components/footer';
+@use 'components/animations';
+
+// Pages
+@use 'pages/home';
+@use 'pages/courses';
+@use 'pages/faculty';
+@use 'pages/dashboard';
+@use 'pages/admissions';

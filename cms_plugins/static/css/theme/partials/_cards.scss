@@ -1,0 +1,229 @@
+// Card styles for the Student Management System
+
+// Card base styles
+.card {
+  background-color: $bg-primary;
+  border-radius: $border-radius-md; // 12px
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  padding: $spacing-6; // 1.5rem
+  margin-bottom: $spacing-6; // 1.5rem
+  transition: $transition-normal;
+  position: relative;
+  overflow: hidden;
+  
+  // Hover effect
+  &:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: scale(1.02);
+  }
+  
+  // Card with no hover effect
+  &.card-static {
+    &:hover {
+      transform: none;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+  }
+  
+  // Card with no shadow
+  &.card-flat {
+    box-shadow: none;
+    
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  
+  // Card with border
+  &.card-bordered {
+    border: 1px solid $border-primary;
+    box-shadow: none;
+    
+    &:hover {
+      box-shadow: none;
+      border-color: $color-primary;
+    }
+  }
+}
+
+// Card header
+.card-header {
+  padding: 0 0 $spacing-4 0;
+  margin-bottom: $spacing-4;
+  border-bottom: 1px solid $border-primary;
+  
+  &:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+}
+
+// Card body
+.card-body {
+  padding: 0;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Card footer
+.card-footer {
+  padding: $spacing-4 0 0 0;
+  margin-top: $spacing-4;
+  border-top: 1px solid $border-primary;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Card title
+.card-title {
+  @include heading-3;
+  margin-bottom: $spacing-3;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Card subtitle
+.card-subtitle {
+  @include heading-4;
+  color: $color-text-secondary;
+  margin-top: -$spacing-2;
+  margin-bottom: $spacing-3;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Card text
+.card-text {
+  @include body-text;
+  margin-bottom: $spacing-4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Card link
+.card-link {
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  transition: $transition-fast;
+  
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Card image
+.card-img {
+  width: 100%;
+  height: auto;
+  border-radius: $border-radius-md;
+  margin-bottom: $spacing-4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+  border-top-left-radius: $border-radius-md;
+  border-top-right-radius: $border-radius-md;
+  margin-bottom: $spacing-4;
+}
+
+.card-img-bottom {
+  width: 100%;
+  height: auto;
+  border-bottom-left-radius: $border-radius-md;
+  border-bottom-right-radius: $border-radius-md;
+  margin-top: $spacing-4;
+}
+
+// Card with image overlay
+.card-img-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: $spacing-6;
+  border-radius: $border-radius-md;
+  background-color: rgba($color-primary, 0.8);
+  color: $bg-primary;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  
+  .card-title,
+  .card-subtitle,
+  .card-text {
+    color: inherit;
+  }
+  
+  .card-link {
+    color: inherit;
+    font-weight: $font-weight-bold;
+  }
+}
+
+// Card group
+.card-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-6;
+  
+  .card {
+    flex: 1 0 0;
+    margin-bottom: 0;
+  }
+  
+  @include tablet-and-down {
+    flex-direction: column;
+    
+    .card {
+      width: 100%;
+    }
+  }
+}
+
+// Card deck
+.card-deck {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: $spacing-6;
+  
+  .card {
+    margin-bottom: 0;
+  }
+}
+
+// Card columns (Masonry layout)
+.card-columns {
+  column-count: 3;
+  column-gap: $spacing-6;
+  
+  .card {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: $spacing-6;
+  }
+  
+  @include tablet {
+    column-count: 2;
+  }
+  
+  @include mobile {
+    column-count: 1;
+  }
+}

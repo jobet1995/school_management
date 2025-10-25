@@ -1,0 +1,25 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/welcome_section.css' %}">
+
+<div class="welcome-section {{ instance.image_alignment }}" data-plugin-id="{{ instance.id }}">
+    {% if instance.image and instance.image_alignment == 'background' %}
+        <div class="welcome-background">
+            <img src="{{ instance.image.url }}" alt="{{ instance.heading }}">
+        </div>
+    {% endif %}
+    
+    <div class="welcome-content">
+        <h2>{{ instance.heading }}</h2>
+        <div class="welcome-text">{{ instance.content|safe }}</div>
+        
+        {% if instance.cta_text and instance.cta_link %}
+            <a href="{{ instance.cta_link }}" class="welcome-cta-button">{{ instance.cta_text }}</a>
+        {% endif %}
+    </div>
+    
+    {% if instance.image and instance.image_alignment != 'background' %}
+        <div class="welcome-image">
+            <img src="{{ instance.image.url }}" alt="{{ instance.heading }}">
+        </div>
+    {% endif %}
+</div>

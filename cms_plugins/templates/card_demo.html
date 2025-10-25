@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Card Components Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/theme/main.css">
+    <style>
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+        
+        .demo-grid {
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="demo-section">
+            <h1>Card Components Demo</h1>
+            <p class="text-muted">A demonstration of the card components for the Django CMS Student Management System</p>
+        </header>
+        
+        <section class="demo-section">
+            <h2>Basic Cards</h2>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Basic Card</h3>
+                            <p class="card-text">This is a basic card with default styles. It has a white background, subtle shadow, and padding.</p>
+                            <a href="#" class="card-link">Card link</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Card with Header</h3>
+                            <div class="card-header">
+                                <h4 class="card-subtitle">Special Offer</h4>
+                            </div>
+                            <p class="card-text">This card has a header section with a subtitle.</p>
+                            <a href="#" class="card-link">Learn more</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Card with Footer</h3>
+                            <p class="card-text">This card has a footer section with additional information.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>Cards with Images</h2>
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <img src="https://placehold.co/400x200" class="card-img-top" alt="Card image">
+                        <div class="card-body">
+                            <h3 class="card-title">Card with Image</h3>
+                            <p class="card-text">This card has an image at the top with descriptive text below.</p>
+                            <a href="#" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Card with Overlay</h3>
+                            <p class="card-text">This card has an image with text overlay.</p>
+                        </div>
+                        <img src="https://placehold.co/400x200" class="card-img" alt="Card image">
+                        <div class="card-img-overlay">
+                            <h4 class="card-title">Overlay Title</h4>
+                            <p class="card-text">This text is overlaid on the image.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card card-bordered">
+                        <div class="card-body">
+                            <h3 class="card-title">Bordered Card</h3>
+                            <p class="card-text">This card has a border instead of a shadow for a cleaner look.</p>
+                            <a href="#" class="btn btn-outline-primary">Action</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>Card Groups</h2>
+            <div class="card-group">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Group Item 1</h3>
+                        <p class="card-text">Cards in a group are attached to one another and have equal width.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Group Item 2</h3>
+                        <p class="card-text">The borders and corners are automatically adjusted.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Group Item 3</h3>
+                        <p class="card-text">On smaller screens, cards stack vertically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>Card Decks</h2>
+            <div class="card-deck">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Deck Item 1</h3>
+                        <p class="card-text">Cards in a deck are of equal height and width.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Deck Item 2</h3>
+                        <p class="card-text">They maintain their layout on all screen sizes.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Deck Item 3</h3>
+                        <p class="card-text">On smaller screens, they stack vertically.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="demo-section">
+            <h2>Grid System</h2>
+            <div class="demo-grid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Full Width Column</h3>
+                                <p class="card-text">This column takes up the full width on all screen sizes.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-grid">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Half Width</h3>
+                                <p class="card-text">This column takes up half the width on desktop.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Half Width</h3>
+                                <p class="card-text">This column takes up half the width on desktop.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-grid">
+                <div class="row">
+                    <div class="col-12 col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Responsive Column</h3>
+                                <p class="card-text">Full width on mobile, one-third on desktop.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Responsive Column</h3>
+                                <p class="card-text">Full width on mobile, one-third on desktop.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Responsive Column</h3>
+                                <p class="card-text">Full width on mobile, one-third on desktop.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

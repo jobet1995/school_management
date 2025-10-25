@@ -1,0 +1,18 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/statistics_counter.css' %}">
+
+<div class="statistics-counter-container">
+    <div class="statistics-counter-grid">
+        {% for counter in counters %}
+            <div class="statistics-counter-item">
+                {% if counter.icon %}
+                    <div class="statistics-counter-icon">
+                        <i class="{{ counter.icon }}"></i>
+                    </div>
+                {% endif %}
+                <div class="statistics-counter-value">{{ counter.value }}</div>
+                <div class="statistics-counter-label">{{ counter.label }}</div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

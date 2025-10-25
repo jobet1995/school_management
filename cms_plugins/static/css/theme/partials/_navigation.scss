@@ -1,0 +1,310 @@
+// Navigation styles for the Student Management System
+
+// Navbar base styles
+.navbar {
+  background-color: $color-primary; // #1E3A8A
+  padding: $spacing-4 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all $transition-normal;
+  
+  // Navbar when scrolled
+  &.navbar-scrolled {
+    padding: $spacing-2 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+}
+
+// Navbar container
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: $container-desktop;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+  
+  @include tablet {
+    padding: 0 $spacing-6;
+  }
+  
+  @include desktop {
+    padding: 0 $spacing-8;
+  }
+}
+
+// Navbar brand/logo
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: $bg-primary;
+  font-family: $font-primary;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-xl;
+  transition: $transition-fast;
+  
+  &:hover {
+    color: $color-accent; // #F59E0B
+    text-decoration: none;
+  }
+  
+  img {
+    height: 40px;
+    margin-right: $spacing-3;
+  }
+}
+
+// Navbar toggler (mobile menu button)
+.navbar-toggler {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 21px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 10;
+  
+  span {
+    display: block;
+    height: 3px;
+    width: 100%;
+    background-color: $bg-primary;
+    border-radius: 2px;
+    transition: all $transition-normal;
+  }
+  
+  &.active {
+    span:nth-child(1) {
+      transform: translateY(9px) rotate(45deg);
+    }
+    
+    span:nth-child(2) {
+      opacity: 0;
+    }
+    
+    span:nth-child(3) {
+      transform: translateY(-9px) rotate(-45deg);
+    }
+  }
+  
+  @include tablet-and-down {
+    display: flex;
+  }
+}
+
+// Navbar collapse (mobile menu container)
+.navbar-collapse {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  
+  @include tablet-and-down {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba($color-primary, 0.95);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: $spacing-8 $spacing-4;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-100%);
+    transition: all $transition-normal;
+    overflow-y: auto;
+    
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+  }
+}
+
+// Navbar navigation
+.navbar-nav {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  
+  @include tablet-and-down {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+// Nav items
+.nav-item {
+  margin: 0 $spacing-2;
+  
+  @include tablet-and-down {
+    margin: $spacing-2 0;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+// Nav links
+.nav-link {
+  display: block;
+  padding: $spacing-3 $spacing-4;
+  color: $bg-primary;
+  text-decoration: none;
+  font-family: $font-primary;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-base;
+  border-radius: $border-radius-sm;
+  transition: $transition-fast;
+  
+  &:hover,
+  &.active {
+    color: $color-accent; // #F59E0B
+    text-decoration: none;
+  }
+  
+  @include tablet-and-down {
+    padding: $spacing-4;
+    font-size: $font-size-lg;
+  }
+}
+
+// Dropdown menu
+.dropdown {
+  position: relative;
+  
+  @include tablet-and-down {
+    width: 100%;
+  }
+}
+
+.dropdown-toggle {
+  &::after {
+    display: inline-block;
+    margin-left: $spacing-2;
+    vertical-align: 0.255em;
+    content: "";
+    border-top: 0.3em solid;
+    border-right: 0.3em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
+  }
+  
+  @include tablet-and-down {
+    &::after {
+      float: right;
+      margin-top: 0.5em;
+    }
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 10rem;
+  padding: $spacing-2 0;
+  margin: $spacing-1 0 0;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  text-align: left;
+  list-style: none;
+  background-color: $bg-primary;
+  background-clip: padding-box;
+  border: 1px solid $border-primary;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-md;
+  
+  @include tablet-and-down {
+    position: static;
+    display: none !important;
+    width: 100%;
+    margin: $spacing-2 0 0;
+    box-shadow: none;
+    border: none;
+    border-top: 1px solid $border-primary;
+    border-radius: 0;
+    
+    &.show {
+      display: block !important;
+    }
+  }
+  
+  .show > & {
+    display: block;
+  }
+}
+
+.dropdown-item {
+  display: block;
+  width: 100%;
+  padding: $spacing-2 $spacing-4;
+  clear: both;
+  font-weight: $font-weight-normal;
+  color: $color-text-primary;
+  text-align: inherit;
+  text-decoration: none;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  transition: $transition-fast;
+  
+  &:hover,
+  &:focus {
+    color: $color-primary;
+    text-decoration: none;
+    background-color: $color-secondary;
+  }
+  
+  &.active,
+  &:active {
+    color: $bg-primary;
+    text-decoration: none;
+    background-color: $color-primary;
+  }
+  
+  &.disabled,
+  &:disabled {
+    color: $color-text-secondary;
+    pointer-events: none;
+    background-color: transparent;
+  }
+  
+  @include tablet-and-down {
+    padding: $spacing-3 $spacing-4;
+    text-align: center;
+  }
+}
+
+// Navbar utilities
+.navbar-dark {
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.75%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+}
+
+// Responsive adjustments
+@include tablet-and-down {
+  .navbar-nav {
+    .dropdown-menu {
+      display: none;
+      &.show {
+        display: block;
+      }
+    }
+  }
+}

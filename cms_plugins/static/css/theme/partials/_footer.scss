@@ -1,0 +1,217 @@
+// Footer styles for the Student Management System
+
+// Footer base styles
+.footer {
+  background-color: $color-text-primary; // #111827
+  color: $color-secondary; // #F3F4F6
+  padding: $spacing-8 0;
+  margin-top: auto;
+  
+  a {
+    color: $color-secondary; // #F3F4F6
+    text-decoration: none;
+    transition: $transition-fast;
+    
+    &:hover {
+      color: $color-accent; // #F59E0B
+      text-decoration: underline;
+    }
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: $bg-primary;
+  }
+  
+  p {
+    color: $color-secondary;
+  }
+}
+
+// Footer container
+.footer-container {
+  max-width: $container-desktop;
+  margin: 0 auto;
+  padding: 0 $spacing-4;
+  
+  @include tablet {
+    padding: 0 $spacing-6;
+  }
+  
+  @include desktop {
+    padding: 0 $spacing-8;
+  }
+}
+
+// Footer widgets
+.footer-widgets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: $spacing-8;
+  margin-bottom: $spacing-8;
+  
+  @include mobile {
+    grid-template-columns: 1fr;
+    gap: $spacing-6;
+  }
+}
+
+// Footer widget
+.footer-widget {
+  h3 {
+    font-size: $font-size-lg;
+    margin-bottom: $spacing-4;
+    position: relative;
+    padding-bottom: $spacing-2;
+    
+    &::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 50px;
+      height: 2px;
+      background-color: $color-accent;
+    }
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    li {
+      margin-bottom: $spacing-3;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Footer links
+.footer-links {
+  a {
+    display: block;
+    padding: $spacing-2 0;
+    transition: $transition-fast;
+    
+    &:hover {
+      color: $color-accent;
+      text-decoration: none;
+      padding-left: $spacing-2;
+    }
+  }
+}
+
+// Social icons
+.social-icons {
+  display: flex;
+  gap: $spacing-4;
+  margin-top: $spacing-4;
+  
+  a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: rgba($color-secondary, 0.1);
+    color: $color-secondary;
+    font-size: $font-size-lg;
+    transition: $transition-fast;
+    
+    &:hover {
+      background-color: $color-accent;
+      color: $bg-primary;
+      transform: translateY(-3px);
+    }
+  }
+}
+
+// Footer bottom
+.footer-bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: $spacing-6;
+  border-top: 1px solid rgba($color-secondary, 0.1);
+  
+  @include tablet {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+// Footer copyright
+.footer-copyright {
+  margin-bottom: $spacing-4;
+  
+  @include tablet {
+    margin-bottom: 0;
+  }
+}
+
+// Footer nav
+.footer-nav {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: $spacing-4;
+    
+    @include mobile {
+      gap: $spacing-3;
+    }
+  }
+  
+  a {
+    display: block;
+    padding: $spacing-1 0;
+    transition: $transition-fast;
+    
+    &:hover {
+      color: $color-accent;
+      text-decoration: none;
+    }
+  }
+}
+
+// Back to top button
+.back-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: $color-primary;
+  color: $bg-primary;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-lg;
+  text-decoration: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: $transition-normal;
+  z-index: 999;
+  box-shadow: $shadow-lg;
+  
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  &:hover {
+    background-color: $color-accent;
+    color: $bg-primary;
+    transform: translateY(-3px);
+  }
+}

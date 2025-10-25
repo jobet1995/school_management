@@ -1,0 +1,301 @@
+// Courses Page
+@use '../base/variables';
+@use '../base/mixins';
+
+// Courses header
+.courses-header {
+  padding: variables.$spacing-10 0;
+  background-color: variables.$color-secondary;
+  text-align: center;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-8 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-6 0;
+  }
+  
+  .courses-title {
+    @include mixins.heading-1;
+    margin-bottom: variables.$spacing-4;
+  }
+  
+  .courses-description {
+    @include mixins.body-text;
+    max-width: 700px;
+    margin: 0 auto variables.$spacing-6;
+    color: variables.$color-text-secondary;
+  }
+}
+
+// Courses filter
+.courses-filter {
+  padding: variables.$spacing-6 0;
+  background-color: variables.$bg-primary;
+  border-bottom: 1px solid variables.$border-primary;
+  
+  .filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: variables.$spacing-3;
+    justify-content: center;
+    
+    @include mixins.mobile {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+  
+  .filter-select {
+    min-width: 200px;
+    
+    @include mixins.mobile {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+}
+
+// Courses grid
+.courses-grid {
+  padding: variables.$spacing-8 0;
+  
+  .courses-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+}
+
+// Course card
+.course-card {
+  @include mixins.card-base;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
+  .course-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: variables.$border-radius-md variables.$border-radius-md 0 0;
+  }
+  
+  .course-body {
+    flex: 1;
+    padding: variables.$spacing-5;
+    
+    @include mixins.mobile {
+      padding: variables.$spacing-4;
+    }
+  }
+  
+  .course-category {
+    display: inline-block;
+    padding: variables.$spacing-1 variables.$spacing-3;
+    font-size: variables.$font-size-sm;
+    font-weight: variables.$font-weight-semibold;
+    border-radius: variables.$border-radius-full;
+    margin-bottom: variables.$spacing-3;
+    
+    &.category-science {
+      background-color: rgba(variables.$color-info, 0.1);
+      color: variables.$color-info;
+    }
+    
+    &.category-arts {
+      background-color: rgba(variables.$color-accent, 0.1);
+      color: variables.$color-accent;
+    }
+    
+    &.category-business {
+      background-color: rgba(variables.$color-success, 0.1);
+      color: variables.$color-success;
+    }
+    
+    &.category-technology {
+      background-color: rgba(variables.$color-primary, 0.1);
+      color: variables.$color-primary;
+    }
+  }
+  
+  .course-title {
+    @include mixins.heading-4;
+    margin-bottom: variables.$spacing-3;
+  }
+  
+  .course-description {
+    @include mixins.body-text;
+    color: variables.$color-text-secondary;
+    margin-bottom: variables.$spacing-4;
+  }
+  
+  .course-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: variables.$spacing-4;
+    font-size: variables.$font-size-sm;
+    color: variables.$color-text-secondary;
+  }
+  
+  .course-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    .course-price {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-xl;
+      font-weight: variables.$font-weight-bold;
+      color: variables.$color-primary;
+    }
+  }
+}
+
+// Course details
+.course-details {
+  padding: variables.$spacing-8 0;
+  
+  .course-header {
+    margin-bottom: variables.$spacing-6;
+    
+    .course-category {
+      display: inline-block;
+      padding: variables.$spacing-1 variables.$spacing-3;
+      font-size: variables.$font-size-sm;
+      font-weight: variables.$font-weight-semibold;
+      border-radius: variables.$border-radius-full;
+      margin-bottom: variables.$spacing-3;
+      
+      &.category-science {
+        background-color: rgba(variables.$color-info, 0.1);
+        color: variables.$color-info;
+      }
+      
+      &.category-arts {
+        background-color: rgba(variables.$color-accent, 0.1);
+        color: variables.$color-accent;
+      }
+      
+      &.category-business {
+        background-color: rgba(variables.$color-success, 0.1);
+        color: variables.$color-success;
+      }
+      
+      &.category-technology {
+        background-color: rgba(variables.$color-primary, 0.1);
+        color: variables.$color-primary;
+      }
+    }
+    
+    .course-title {
+      @include mixins.heading-2;
+      margin-bottom: variables.$spacing-3;
+    }
+    
+    .course-instructor {
+      @include mixins.body-text;
+      color: variables.$color-text-secondary;
+      margin-bottom: variables.$spacing-4;
+    }
+  }
+  
+  .course-content {
+    .course-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: variables.$border-radius-md;
+      margin-bottom: variables.$spacing-6;
+      
+      @include mixins.tablet {
+        height: 300px;
+      }
+      
+      @include mixins.mobile {
+        height: 250px;
+      }
+    }
+    
+    .course-description {
+      @include mixins.body-text;
+      margin-bottom: variables.$spacing-6;
+    }
+    
+    .course-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: variables.$spacing-6;
+      margin-bottom: variables.$spacing-6;
+      
+      @include mixins.mobile {
+        grid-template-columns: 1fr;
+        gap: variables.$spacing-4;
+      }
+    }
+    
+    .course-detail-card {
+      background: variables.$bg-primary;
+      border-radius: variables.$border-radius-md;
+      box-shadow: variables.$shadow-md;
+      padding: variables.$spacing-5;
+      
+      .detail-title {
+        @include mixins.heading-5;
+        margin-bottom: variables.$spacing-3;
+        color: variables.$color-primary;
+      }
+      
+      .detail-content {
+        @include mixins.body-text;
+        color: variables.$color-text-secondary;
+        margin-bottom: 0;
+      }
+    }
+  }
+  
+  .course-actions {
+    display: flex;
+    gap: variables.$spacing-4;
+    margin-top: variables.$spacing-6;
+    
+    @include mixins.mobile {
+      flex-direction: column;
+      
+      .btn {
+        width: 100%;
+      }
+    }
+  }
+}
+
+// Related courses
+.related-courses {
+  padding: variables.$spacing-8 0;
+  background-color: variables.$color-secondary;
+  
+  .section-title {
+    @include mixins.heading-3;
+    text-align: center;
+    margin-bottom: variables.$spacing-6;
+  }
+  
+  .courses-grid {
+    padding: 0;
+    
+    .courses-container {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: variables.$spacing-4;
+    }
+  }
+}

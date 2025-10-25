@@ -1,14 +1,30 @@
-<div class="featured-announcements">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/featured_announcements.css' %}">
+
+<div class="featured-announcements" data-plugin-id="{{ instance.id }}">
     <h2>{{ instance.title }}</h2>
-    <div class="announcements-list">
-        {% for announcement in announcements %}
-            <div class="announcement-item">
-                <h3>{{ announcement.title }}</h3>
-                <p class="announcement-date">{{ announcement.created_at|date:"F d, Y" }}</p>
-                <p class="announcement-content">{{ announcement.content|truncatewords:30 }}</p>
-            </div>
-        {% empty %}
-            <p>No announcements available.</p>
-        {% endfor %}
+    <div class="announcements-container {% if enable_carousel %}carousel-enabled{% endif %}">
+        {% if enable_carousel %}
+            <button class="carousel-nav carousel-prev" aria-label="Previous announcement">&#8249;</button>
+        {% endif %}
+        <div class="announcements-list {% if enable_carousel %}carousel{% endif %}">
+            {% for announcement in announcements %}
+                <div class="announcement-item {% if forloop.first %}featured{% endif %}" data-announcement-id="{{ announcement.id }}">
+                    <h3>{{ announcement.title }}</h3>
+                    <p class="announcement-date">{{ announcement.created_at|date:"F d, Y" }}</p>
+                    <div class="announcement-content-wrapper">
+                        <p class="announcement-content">{{ announcement.content }}</p>
+                        {% if announcement.content|length > 200 %}
+                            <button class="read-more-btn">Read more</button>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>No announcements available.</p>
+            {% endfor %}
+        </div>
+        {% if enable_carousel %}
+            <button class="carousel-nav carousel-next" aria-label="Next announcement">&#8250;</button>
+        {% endif %}
     </div>
 </div>

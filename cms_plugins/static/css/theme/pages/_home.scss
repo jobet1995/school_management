@@ -1,0 +1,759 @@
+// Home Page
+@use 'sass:color';
+@use '../base/variables';
+@use '../base/mixins';
+
+// Hero section
+.hero-section {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  
+  @include mixins.tablet {
+    min-height: 400px;
+  }
+  
+  @include mixins.mobile {
+    min-height: 300px;
+  }
+  
+  // Overlay gradient
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.3) 100%);
+    z-index: 1;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 variables.$spacing-4;
+    color: variables.$bg-primary;
+    
+    .hero-title {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-5xl;
+      font-weight: variables.$font-weight-bold;
+      line-height: 1.2;
+      margin-bottom: variables.$spacing-4;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-4xl;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-3xl;
+      }
+    }
+    
+    .hero-subtitle {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-xl;
+      font-weight: variables.$font-weight-normal;
+      line-height: 1.5;
+      margin-bottom: variables.$spacing-6;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-lg;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-base;
+      }
+    }
+    
+    .btn {
+      @include mixins.button-primary;
+      padding: variables.$spacing-4 variables.$spacing-8;
+      font-size: variables.$font-size-lg;
+      
+      @include mixins.mobile {
+        padding: variables.$spacing-3 variables.$spacing-6;
+        font-size: variables.$font-size-base;
+      }
+      
+      &:hover:not(:disabled) {
+        background-color: color.scale(variables.$color-primary, $lightness: -10%);
+        border-color: color.scale(variables.$color-primary, $lightness: -10%);
+        transform: translateY(-2px);
+        box-shadow: variables.$shadow-md;
+      }
+    }
+  }
+}
+
+// Featured Announcements
+.featured-announcements {
+  padding: variables.$spacing-10 0;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-8 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-6 0;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: variables.$spacing-8;
+    
+    @include mixins.tablet {
+      margin-bottom: variables.$spacing-6;
+    }
+    
+    @include mixins.mobile {
+      margin-bottom: variables.$spacing-4;
+    }
+  }
+  
+  .announcements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .announcement-card {
+    background: variables.$bg-primary;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: variables.$spacing-6;
+    transition: all variables.$transition-normal;
+    opacity: 0;
+    transform: translateY(20px);
+    
+    &.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    
+    &:hover {
+      transform: translateY(-5px) scale(1.02);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .announcement-date {
+      display: block;
+      font-size: variables.$font-size-sm;
+      color: variables.$color-text-secondary;
+      margin-bottom: variables.$spacing-3;
+    }
+    
+    .announcement-title {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-xl;
+      font-weight: variables.$font-weight-semibold;
+      margin-bottom: variables.$spacing-3;
+      color: variables.$color-text-primary;
+    }
+    
+    .announcement-content {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-base;
+      line-height: 1.6;
+      color: variables.$color-text-primary;
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Upcoming Events Carousel
+.upcoming-events {
+  padding: variables.$spacing-10 0;
+  background-color: variables.$color-secondary;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-8 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-6 0;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: variables.$spacing-8;
+    
+    @include mixins.tablet {
+      margin-bottom: variables.$spacing-6;
+    }
+    
+    @include mixins.mobile {
+      margin-bottom: variables.$spacing-4;
+    }
+  }
+  
+  .events-container {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .events-slider {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .event-card {
+    background: variables.$bg-primary;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: variables.$spacing-6;
+    transition: all variables.$transition-normal;
+    
+    &:hover {
+      transform: scale(1.03);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .event-date {
+      display: flex;
+      align-items: center;
+      margin-bottom: variables.$spacing-4;
+      
+      .date-box {
+        background-color: variables.$color-primary;
+        color: variables.$bg-primary;
+        border-radius: variables.$border-radius-sm;
+        padding: variables.$spacing-2 variables.$spacing-3;
+        text-align: center;
+        margin-right: variables.$spacing-3;
+        min-width: 60px;
+        
+        .day {
+          display: block;
+          font-size: variables.$font-size-xl;
+          font-weight: variables.$font-weight-bold;
+          line-height: 1;
+        }
+        
+        .month {
+          display: block;
+          font-size: variables.$font-size-sm;
+          text-transform: uppercase;
+        }
+      }
+      
+      .event-time {
+        font-size: variables.$font-size-sm;
+        color: variables.$color-text-secondary;
+      }
+    }
+    
+    .event-title {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-xl;
+      font-weight: variables.$font-weight-semibold;
+      margin-bottom: variables.$spacing-3;
+      color: variables.$color-text-primary;
+    }
+    
+    .event-location {
+      display: flex;
+      align-items: center;
+      font-size: variables.$font-size-sm;
+      color: variables.$color-text-secondary;
+      margin-bottom: variables.$spacing-4;
+      
+      .icon {
+        margin-right: variables.$spacing-2;
+      }
+    }
+    
+    .event-description {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-base;
+      line-height: 1.6;
+      color: variables.$color-text-primary;
+      margin-bottom: variables.$spacing-4;
+    }
+    
+    .event-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      
+      .event-price {
+        font-family: variables.$font-primary;
+        font-size: variables.$font-size-lg;
+        font-weight: variables.$font-weight-bold;
+        color: variables.$color-primary;
+      }
+    }
+  }
+  
+  .carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: variables.$spacing-3;
+    margin-top: variables.$spacing-6;
+    
+    .carousel-btn {
+      @include mixins.button-base;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: variables.$bg-primary;
+      color: variables.$color-text-primary;
+      border-color: variables.$border-primary;
+      
+      &:hover:not(:disabled) {
+        background-color: variables.$color-primary;
+        color: variables.$bg-primary;
+        border-color: variables.$color-primary;
+        transform: translateY(-2px);
+        box-shadow: variables.$shadow-md;
+      }
+    }
+  }
+}
+
+// Quick Links / Feature Blocks
+.quick-links {
+  padding: variables.$spacing-10 0;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-8 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-6 0;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: variables.$spacing-8;
+    
+    @include mixins.tablet {
+      margin-bottom: variables.$spacing-6;
+    }
+    
+    @include mixins.mobile {
+      margin-bottom: variables.$spacing-4;
+    }
+  }
+  
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .link-card {
+    background: variables.$bg-primary;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: variables.$spacing-6;
+    transition: all variables.$transition-normal;
+    text-align: center;
+    
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    }
+    
+    .link-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto variables.$spacing-4;
+      background-color: rgba(variables.$color-primary, 0.1);
+      color: variables.$color-primary;
+      border-radius: variables.$border-radius-full;
+      font-size: variables.$font-size-2xl;
+    }
+    
+    .link-title {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-lg;
+      font-weight: variables.$font-weight-semibold;
+      margin-bottom: variables.$spacing-3;
+      color: variables.$color-text-primary;
+    }
+    
+    .link-description {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-base;
+      line-height: 1.6;
+      color: variables.$color-text-secondary;
+      margin-bottom: variables.$spacing-4;
+    }
+    
+    .btn {
+      @include mixins.button-outline-primary;
+      padding: variables.$spacing-2 variables.$spacing-4;
+      font-size: variables.$font-size-sm;
+    }
+  }
+}
+
+// Statistics / Counters
+.statistics {
+  padding: variables.$spacing-10 0;
+  background-color: variables.$color-secondary;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-8 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-6 0;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: variables.$spacing-8;
+    
+    @include mixins.tablet {
+      margin-bottom: variables.$spacing-6;
+    }
+    
+    @include mixins.mobile {
+      margin-bottom: variables.$spacing-4;
+    }
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .stat-card {
+    text-align: center;
+    padding: variables.$spacing-4;
+    
+    .stat-number {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-5xl;
+      font-weight: variables.$font-weight-bold;
+      color: variables.$color-primary;
+      margin-bottom: variables.$spacing-2;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-4xl;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-3xl;
+      }
+    }
+    
+    .stat-label {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-lg;
+      font-weight: variables.$font-weight-semibold;
+      color: variables.$color-text-primary;
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-base;
+      }
+    }
+    
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto variables.$spacing-3;
+      background-color: rgba(variables.$color-primary, 0.1);
+      color: variables.$color-primary;
+      border-radius: variables.$border-radius-full;
+      font-size: variables.$font-size-xl;
+    }
+  }
+}
+
+// Testimonials
+.testimonials {
+  padding: variables.$spacing-10 0;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-8 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-6 0;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-bottom: variables.$spacing-8;
+    
+    @include mixins.tablet {
+      margin-bottom: variables.$spacing-6;
+    }
+    
+    @include mixins.mobile {
+      margin-bottom: variables.$spacing-4;
+    }
+  }
+  
+  .testimonials-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .testimonials-slider {
+    overflow: hidden;
+  }
+  
+  .testimonial-card {
+    background: variables.$bg-primary;
+    border-radius: variables.$border-radius-md;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    padding: variables.$spacing-8;
+    text-align: center;
+    margin: 0 variables.$spacing-4;
+    
+    @include mixins.tablet {
+      padding: variables.$spacing-6;
+    }
+    
+    @include mixins.mobile {
+      padding: variables.$spacing-4;
+    }
+    
+    &.active {
+      background: rgba(variables.$color-primary, 0.05);
+      border: 1px solid variables.$color-primary;
+    }
+    
+    .testimonial-photo {
+      width: 80px;
+      height: 80px;
+      border-radius: variables.$border-radius-full;
+      object-fit: cover;
+      margin: 0 auto variables.$spacing-4;
+      border: 3px solid variables.$color-primary;
+    }
+    
+    .testimonial-content {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-lg;
+      font-style: italic;
+      line-height: 1.6;
+      color: variables.$color-text-primary;
+      margin-bottom: variables.$spacing-4;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-base;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-sm;
+      }
+    }
+    
+    .testimonial-author {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-lg;
+      font-weight: variables.$font-weight-semibold;
+      color: variables.$color-text-primary;
+      margin-bottom: variables.$spacing-1;
+    }
+    
+    .testimonial-course {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-base;
+      color: variables.$color-text-secondary;
+    }
+  }
+  
+  .carousel-nav {
+    display: flex;
+    justify-content: center;
+    gap: variables.$spacing-3;
+    margin-top: variables.$spacing-6;
+    
+    .carousel-btn {
+      @include mixins.button-base;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: variables.$bg-primary;
+      color: variables.$color-text-primary;
+      border-color: variables.$border-primary;
+      
+      &:hover:not(:disabled) {
+        background-color: color.scale(variables.$color-primary, $lightness: -10%);
+        border-color: color.scale(variables.$color-primary, $lightness: -10%);
+        color: variables.$bg-primary;
+        transform: translateY(-2px);
+        box-shadow: variables.$shadow-md;
+      }
+    }
+  }
+  
+  .carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: variables.$spacing-2;
+    margin-top: variables.$spacing-4;
+    
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: variables.$border-radius-full;
+      background-color: variables.$border-primary;
+      cursor: pointer;
+      transition: all variables.$transition-fast;
+      
+      &.active {
+        background-color: variables.$color-primary;
+        transform: scale(1.2);
+      }
+    }
+  }
+}
+
+// CTA Banner
+.cta-banner {
+  position: relative;
+  width: 100%;
+  padding: variables.$spacing-12 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  text-align: center;
+  
+  @include mixins.tablet {
+    padding: variables.$spacing-10 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-8 0;
+  }
+  
+  // Overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(variables.$color-primary, 0.85);
+    z-index: 1;
+  }
+  
+  .banner-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 variables.$spacing-4;
+    color: variables.$bg-primary;
+    
+    .banner-title {
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-4xl;
+      font-weight: variables.$font-weight-bold;
+      line-height: 1.2;
+      margin-bottom: variables.$spacing-4;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-3xl;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-2xl;
+      }
+    }
+    
+    .banner-subtitle {
+      font-family: variables.$font-secondary;
+      font-size: variables.$font-size-xl;
+      font-weight: variables.$font-weight-normal;
+      line-height: 1.5;
+      margin-bottom: variables.$spacing-6;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-lg;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-base;
+      }
+    }
+    
+    .btn {
+      @include mixins.button-accent;
+      padding: variables.$spacing-4 variables.$spacing-8;
+      font-size: variables.$font-size-lg;
+      
+      @include mixins.mobile {
+        padding: variables.$spacing-3 variables.$spacing-6;
+        font-size: variables.$font-size-base;
+      }
+      
+      &:hover:not(:disabled) {
+        background-color: color.scale(variables.$color-accent, $lightness: -10%);
+        border-color: color.scale(variables.$color-accent, $lightness: -10%);
+        transform: translateY(-2px);
+        box-shadow: variables.$shadow-md;
+      }
+    }
+  }
+}

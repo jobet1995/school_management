@@ -1,0 +1,284 @@
+// Button styles for the Student Management System
+
+// Base button styles
+.btn {
+  @include button-base;
+}
+
+// Primary buttons
+.btn-primary {
+  @include button-primary;
+}
+
+// Secondary buttons
+.btn-secondary {
+  @include button-secondary;
+}
+
+// Accent buttons
+.btn-accent {
+  @include button-accent;
+}
+
+// Success buttons
+.btn-success {
+  @include button-base;
+  background-color: $color-success;
+  color: $bg-primary;
+  
+  &:hover {
+    background-color: darken($color-success, 10%);
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-success, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+// Warning buttons
+.btn-warning {
+  @include button-base;
+  background-color: $color-warning;
+  color: $bg-primary;
+  
+  &:hover {
+    background-color: darken($color-warning, 10%);
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-warning, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+// Danger buttons
+.btn-danger {
+  @include button-base;
+  background-color: $color-danger;
+  color: $bg-primary;
+  
+  &:hover {
+    background-color: darken($color-danger, 10%);
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+// Outline buttons
+.btn-outline-primary {
+  @include button-base;
+  background-color: transparent;
+  color: $color-primary;
+  border: 2px solid $color-primary;
+  
+  &:hover {
+    background-color: $color-primary;
+    color: $bg-primary;
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.btn-outline-secondary {
+  @include button-base;
+  background-color: transparent;
+  color: $color-text-primary;
+  border: 2px solid $border-primary;
+  
+  &:hover {
+    background-color: $color-text-primary;
+    color: $bg-primary;
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-text-primary, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.btn-outline-accent {
+  @include button-base;
+  background-color: transparent;
+  color: $color-accent;
+  border: 2px solid $color-accent;
+  
+  &:hover {
+    background-color: $color-accent;
+    color: $bg-primary;
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-accent, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.btn-outline-success {
+  @include button-base;
+  background-color: transparent;
+  color: $color-success;
+  border: 2px solid $color-success;
+  
+  &:hover {
+    background-color: $color-success;
+    color: $bg-primary;
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-success, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.btn-outline-warning {
+  @include button-base;
+  background-color: transparent;
+  color: $color-warning;
+  border: 2px solid $color-warning;
+  
+  &:hover {
+    background-color: $color-warning;
+    color: $bg-primary;
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-warning, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+.btn-outline-danger {
+  @include button-base;
+  background-color: transparent;
+  color: $color-danger;
+  border: 2px solid $color-danger;
+  
+  &:hover {
+    background-color: $color-danger;
+    color: $bg-primary;
+    transform: scale(1.05);
+    box-shadow: $shadow-md;
+  }
+  
+  &:focus {
+    box-shadow: 0 0 0 3px rgba($color-danger, 0.3);
+  }
+  
+  &:active {
+    transform: scale(1);
+  }
+}
+
+// Button sizes
+.btn-lg {
+  padding: $spacing-4 $spacing-8;
+  font-size: $font-size-lg;
+}
+
+.btn-sm {
+  padding: $spacing-2 $spacing-4;
+  font-size: $font-size-sm;
+}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+// Rounded buttons
+.btn-rounded {
+  border-radius: $border-radius-full;
+}
+
+// Disabled state
+.btn {
+  &:disabled,
+  &.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+    
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
+}
+
+// Button group
+.btn-group {
+  display: inline-flex;
+  border-radius: $border-radius-md;
+  overflow: hidden;
+  
+  .btn {
+    border-radius: 0;
+    margin: 0;
+    
+    &:not(:first-child) {
+      border-left: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+  
+  &.btn-group-rounded {
+    border-radius: $border-radius-full;
+    
+    .btn:first-child {
+      border-top-left-radius: $border-radius-full;
+      border-bottom-left-radius: $border-radius-full;
+    }
+    
+    .btn:last-child {
+      border-top-right-radius: $border-radius-full;
+      border-bottom-right-radius: $border-radius-full;
+    }
+  }
+}

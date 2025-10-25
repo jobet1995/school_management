@@ -1,0 +1,20 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/quick_links.css' %}">
+
+<div class="quick-links-container">
+    <div class="quick-links-grid">
+        {% for link in links %}
+            <a href="{{ link.link }}" class="quick-link-card" style="background-color: {{ link.background_color }};">
+                {% if link.icon %}
+                    <div class="quick-link-icon">
+                        <i class="{{ link.icon }}"></i>
+                    </div>
+                {% endif %}
+                <div class="quick-link-content">
+                    <h3 class="quick-link-title">{{ link.title }}</h3>
+                    <p class="quick-link-description">{{ link.description }}</p>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+</div>

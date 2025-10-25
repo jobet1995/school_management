@@ -8,15 +8,25 @@
             color: {{ instance.text_color }};
             font-size: {{ instance.font_size }}px;">
     <div class="hero-background">
-        {% if instance.background_image %}
+        {% if instance.background_video %}
+            <video autoplay muted loop class="hero-video">
+                <source src="{{ instance.background_video.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+        {% elif instance.background_image %}
             <img src="{{ instance.background_image.url }}" 
-                 alt="{{ instance.title }}">
+                 alt="{{ instance.title }}" class="hero-image">
         {% endif %}
+        <div class="hero-overlay" 
+             style="background: linear-gradient(to bottom, 
+                                               rgba({{ instance.overlay_color|slice:"1:3"|add:"0" }}, {{ instance.overlay_color|slice:"3:5"|add:"0" }}, {{ instance.overlay_color|slice:"5:7"|add:"0" }}, {{ instance.overlay_opacity }}), 
+                                               rgba({{ instance.overlay_color|slice:"1:3"|add:"0" }}, {{ instance.overlay_color|slice:"3:5"|add:"0" }}, {{ instance.overlay_color|slice:"5:7"|add:"0" }}, {{ instance.overlay_opacity }}));">
+        </div>
     </div>
     <div class="hero-content">
-        <h1>{{ instance.title }}</h1>
+        <h1 class="hero-title">{{ instance.title }}</h1>
         {% if instance.subtitle %}
-            <p>{{ instance.subtitle }}</p>
+            <p class="hero-subtitle">{{ instance.subtitle }}</p>
         {% endif %}
         {% if instance.cta_text and instance.cta_link %}
             <a href="{{ instance.cta_link }}" 

@@ -1,0 +1,296 @@
+// Form styles for the Student Management System
+
+// Form base styles
+.form-group {
+  margin-bottom: $spacing-4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Form labels
+.form-label {
+  display: block;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-2;
+  color: $color-text-primary;
+  
+  &.required {
+    &::after {
+      content: " *";
+      color: $color-danger;
+    }
+  }
+}
+
+// Form controls
+.form-control {
+  display: block;
+  width: 100%;
+  padding: $spacing-3;
+  font-family: $font-secondary;
+  font-size: $font-size-base;
+  line-height: 1.5;
+  color: $color-text-primary;
+  background-color: $bg-primary;
+  background-clip: padding-box;
+  border: 1px solid $border-secondary;
+  border-radius: $border-radius-md; // 8px
+  transition: $transition-fast;
+  
+  &:focus {
+    color: $color-text-primary;
+    background-color: $bg-primary;
+    border-color: $color-primary;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
+  }
+  
+  &::placeholder {
+    color: $color-text-secondary;
+    opacity: 1;
+  }
+  
+  &:disabled,
+  &[readonly] {
+    background-color: $color-secondary;
+    opacity: 1;
+  }
+}
+
+// Textarea
+textarea.form-control {
+  min-height: 120px;
+  resize: vertical;
+}
+
+// Select
+.form-select {
+  @extend .form-control;
+  padding-right: $spacing-10;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right $spacing-3 center;
+  background-size: 16px 12px;
+  background-repeat: no-repeat;
+  
+  &:focus {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%231E3A8A' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  }
+}
+
+// Checkbox and radio
+.form-check {
+  display: block;
+  min-height: $spacing-6;
+  padding-left: $spacing-6;
+  margin-bottom: $spacing-2;
+}
+
+.form-check-input {
+  float: left;
+  margin-left: $spacing-6 * -1;
+  width: $spacing-4;
+  height: $spacing-4;
+  margin-top: ($spacing-5 * 0.75);
+  vertical-align: top;
+  background-color: $bg-primary;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  appearance: none;
+  color-adjust: exact;
+  transition: $transition-fast;
+  
+  &:active {
+    filter: brightness(90%);
+  }
+  
+  &:focus {
+    border-color: $color-primary;
+    outline: 0;
+    box-shadow: 0 0 0 3px rgba($color-primary, 0.25);
+  }
+  
+  &:checked {
+    background-color: $color-primary;
+    border-color: $color-primary;
+    
+    &[type="checkbox"] {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+    }
+    
+    &[type="radio"] {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='2' fill='%23fff'/%3e%3c/svg%3e");
+    }
+  }
+  
+  &:disabled {
+    pointer-events: none;
+    filter: none;
+    opacity: 0.5;
+  }
+  
+  &[type="checkbox"] {
+    border-radius: $border-radius-sm;
+  }
+  
+  &[type="radio"] {
+    border-radius: $border-radius-full;
+  }
+}
+
+.form-check-label {
+  display: inline-block;
+  margin-left: $spacing-2;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+// Form text
+.form-text {
+  display: block;
+  margin-top: $spacing-2;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+// Form errors
+.form-error {
+  display: block;
+  margin-top: $spacing-2;
+  font-size: $font-size-sm;
+  color: $color-danger;
+  font-weight: $font-weight-medium;
+}
+
+// Invalid feedback
+.invalid-feedback {
+  @extend .form-error;
+  display: none;
+  width: 100%;
+  margin-top: $spacing-2;
+  font-size: $font-size-sm;
+  color: $color-danger;
+}
+
+.form-control,
+.form-select {
+  .is-invalid & {
+    border-color: $color-danger;
+    
+    &:focus {
+      border-color: $color-danger;
+      box-shadow: 0 0 0 3px rgba($color-danger, 0.25);
+    }
+  }
+  
+  .is-valid & {
+    border-color: $color-success;
+    
+    &:focus {
+      border-color: $color-success;
+      box-shadow: 0 0 0 3px rgba($color-success, 0.25);
+    }
+  }
+}
+
+.is-invalid ~ .invalid-feedback,
+.is-invalid ~ .invalid-tooltip,
+.is-invalid ~ .form-error {
+  display: block;
+}
+
+// Form row
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 (-$spacing-3);
+  
+  > .col,
+  > [class*="col-"] {
+    padding: 0 $spacing-3;
+  }
+  
+  .form-group {
+    margin-bottom: $spacing-3;
+  }
+}
+
+// Inline form
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  
+  .form-group {
+    margin-bottom: 0;
+    margin-right: $spacing-3;
+  }
+  
+  .form-control {
+    display: inline-block;
+    width: auto;
+    vertical-align: middle;
+  }
+  
+  .form-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    padding-left: 0;
+    margin: 0;
+  }
+  
+  .form-check-input {
+    position: relative;
+    flex-shrink: 0;
+    margin-top: 0;
+    margin-right: $spacing-2;
+    margin-left: 0;
+  }
+  
+  .form-check-label {
+    margin-left: 0;
+  }
+}
+
+// Responsive adjustments
+@include mobile {
+  .form-inline {
+    flex-direction: column;
+    align-items: stretch;
+    
+    .form-group {
+      margin-right: 0;
+      margin-bottom: $spacing-3;
+    }
+    
+    .form-control {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+// Form actions
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-3;
+  margin-top: $spacing-6;
+  
+  .btn {
+    margin: 0;
+  }
+  
+  @include mobile {
+    flex-direction: column;
+    
+    .btn {
+      width: 100%;
+    }
+  }
+}

@@ -1,0 +1,253 @@
+// Typography styles for the Student Management System
+
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+
+// Base font settings
+html {
+  font-size: 16px; // Base font size
+}
+
+body {
+  font-family: $font-secondary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: 1.6;
+  color: $color-text-primary;
+}
+
+// Headings
+h1 {
+  @include heading-1;
+  margin-bottom: $spacing-4;
+}
+
+h2 {
+  @include heading-2;
+  margin-bottom: $spacing-3;
+}
+
+h3 {
+  @include heading-3;
+  margin-bottom: $spacing-3;
+}
+
+h4 {
+  font-family: $font-primary;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  line-height: 1.4;
+  color: $color-text-primary;
+  margin-bottom: $spacing-2;
+}
+
+h5 {
+  font-family: $font-primary;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-medium;
+  line-height: 1.4;
+  color: $color-text-primary;
+  margin-bottom: $spacing-2;
+}
+
+h6 {
+  font-family: $font-primary;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  line-height: 1.5;
+  color: $color-text-primary;
+  margin-bottom: $spacing-1;
+}
+
+// Paragraphs
+p {
+  margin-bottom: $spacing-4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Links
+a {
+  color: $color-primary;
+  text-decoration: none;
+  transition: $transition-fast;
+  
+  &:hover {
+    color: darken($color-primary, 15%);
+    text-decoration: underline;
+  }
+  
+  &:focus {
+    outline: 2px solid $color-primary;
+    outline-offset: 2px;
+  }
+}
+
+// Lists
+ul, ol {
+  margin: 0 0 $spacing-4 $spacing-6;
+  padding: 0;
+  
+  li {
+    margin-bottom: $spacing-1;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+// Definition lists
+dl {
+  margin-bottom: $spacing-4;
+}
+
+dt {
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-1;
+}
+
+dd {
+  margin-left: 0;
+  margin-bottom: $spacing-3;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Blockquotes
+blockquote {
+  margin: 0 0 $spacing-4;
+  padding: $spacing-4;
+  border-left: 4px solid $color-primary;
+  background-color: $color-secondary;
+  font-style: italic;
+  
+  p {
+    margin-bottom: $spacing-2;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  
+  cite {
+    display: block;
+    font-style: normal;
+    font-weight: $font-weight-semibold;
+    color: $color-text-secondary;
+  }
+}
+
+// Code
+code {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: $font-size-sm;
+  padding: $spacing-1 $spacing-2;
+  background-color: $color-secondary;
+  border-radius: $border-radius-sm;
+  color: $color-text-primary;
+}
+
+pre {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: $font-size-sm;
+  padding: $spacing-4;
+  background-color: $color-secondary;
+  border-radius: $border-radius-md;
+  overflow-x: auto;
+  margin-bottom: $spacing-4;
+  
+  code {
+    padding: 0;
+    background-color: transparent;
+  }
+}
+
+// Horizontal rules
+hr {
+  border: 0;
+  height: 1px;
+  background-color: $border-primary;
+  margin: $spacing-6 0;
+}
+
+// Text utilities
+.text-primary {
+  color: $color-primary;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
+
+.text-accent {
+  color: $color-accent;
+}
+
+.text-success {
+  color: $color-success;
+}
+
+.text-warning {
+  color: $color-warning;
+}
+
+.text-danger {
+  color: $color-danger;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-bold {
+  font-weight: $font-weight-bold;
+}
+
+.text-semibold {
+  font-weight: $font-weight-semibold;
+}
+
+.text-medium {
+  font-weight: $font-weight-medium;
+}
+
+.text-normal {
+  font-weight: $font-weight-normal;
+}
+
+.text-light {
+  font-weight: $font-weight-light;
+}

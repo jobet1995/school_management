@@ -1,0 +1,373 @@
+// Dashboard Page
+@use '../base/variables';
+@use '../base/mixins';
+
+// Dashboard layout
+.dashboard {
+  display: flex;
+  min-height: calc(100vh - 100px);
+  
+  @include mixins.tablet-and-down {
+    flex-direction: column;
+  }
+}
+
+// Dashboard sidebar
+.dashboard-sidebar {
+  width: 250px;
+  background-color: variables.$color-primary;
+  color: variables.$bg-primary;
+  padding: variables.$spacing-6 0;
+  
+  @include mixins.tablet-and-down {
+    width: 100%;
+    padding: variables.$spacing-4 0;
+  }
+  
+  .sidebar-header {
+    padding: 0 variables.$spacing-6 variables.$spacing-4;
+    margin-bottom: variables.$spacing-4;
+    border-bottom: 1px solid rgba(variables.$bg-primary, 0.1);
+    
+    @include mixins.tablet-and-down {
+      padding: 0 variables.$spacing-4 variables.$spacing-3;
+    }
+    
+    .sidebar-title {
+      @include mixins.heading-4;
+      color: variables.$bg-primary;
+      margin-bottom: 0;
+    }
+  }
+  
+  .sidebar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    
+    .nav-item {
+      margin-bottom: 0;
+      
+      .nav-link {
+        display: flex;
+        align-items: center;
+        padding: variables.$spacing-3 variables.$spacing-6;
+        color: rgba(variables.$bg-primary, 0.8);
+        text-decoration: none;
+        transition: all variables.$transition-fast;
+        
+        @include mixins.tablet-and-down {
+          padding: variables.$spacing-3 variables.$spacing-4;
+        }
+        
+        i {
+          width: 24px;
+          margin-right: variables.$spacing-3;
+          font-size: variables.$font-size-lg;
+        }
+        
+        &:hover,
+        &.active {
+          background-color: rgba(variables.$bg-primary, 0.1);
+          color: variables.$bg-primary;
+        }
+      }
+    }
+  }
+}
+
+// Dashboard main content
+.dashboard-main {
+  flex: 1;
+  background-color: variables.$bg-secondary;
+  padding: variables.$spacing-6;
+  
+  @include mixins.tablet-and-down {
+    padding: variables.$spacing-4;
+  }
+}
+
+// Dashboard header
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: variables.$spacing-6;
+  
+  @include mixins.tablet-and-down {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: variables.$spacing-3;
+  }
+  
+  .header-title {
+    @include mixins.heading-2;
+    margin-bottom: 0;
+  }
+  
+  .header-actions {
+    display: flex;
+    gap: variables.$spacing-3;
+    
+    @include mixins.tablet-and-down {
+      width: 100%;
+      
+      .btn {
+        flex: 1;
+      }
+    }
+  }
+}
+
+// Dashboard stats
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: variables.$spacing-6;
+  margin-bottom: variables.$spacing-6;
+  
+  @include mixins.tablet {
+    gap: variables.$spacing-4;
+  }
+  
+  @include mixins.mobile {
+    grid-template-columns: 1fr;
+    gap: variables.$spacing-4;
+  }
+  
+  .stat-card {
+    @include mixins.card-base;
+    display: flex;
+    align-items: center;
+    padding: variables.$spacing-5;
+    
+    @include mixins.mobile {
+      padding: variables.$spacing-4;
+    }
+    
+    .stat-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: variables.$border-radius-full;
+      margin-right: variables.$spacing-4;
+      font-size: variables.$font-size-2xl;
+      
+      &.icon-blue {
+        background-color: rgba(variables.$color-info, 0.1);
+        color: variables.$color-info;
+      }
+      
+      &.icon-green {
+        background-color: rgba(variables.$color-success, 0.1);
+        color: variables.$color-success;
+      }
+      
+      &.icon-orange {
+        background-color: rgba(variables.$color-accent, 0.1);
+        color: variables.$color-accent;
+      }
+      
+      &.icon-red {
+        background-color: rgba(variables.$color-danger, 0.1);
+        color: variables.$color-danger;
+      }
+    }
+    
+    .stat-info {
+      flex: 1;
+      
+      .stat-value {
+        font-family: variables.$font-primary;
+        font-size: variables.$font-size-3xl;
+        font-weight: variables.$font-weight-bold;
+        margin-bottom: variables.$spacing-1;
+      }
+      
+      .stat-label {
+        font-size: variables.$font-size-base;
+        color: variables.$color-text-secondary;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Dashboard charts
+.dashboard-charts {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: variables.$spacing-6;
+  
+  @include mixins.tablet-and-down {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-card {
+    @include mixins.card-base;
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: variables.$spacing-4;
+      
+      .chart-title {
+        @include mixins.heading-4;
+        margin-bottom: 0;
+      }
+      
+      .chart-actions {
+        display: flex;
+        gap: variables.$spacing-2;
+      }
+    }
+  }
+}
+
+// Dashboard tables
+.dashboard-tables {
+  margin-top: variables.$spacing-6;
+  
+  .table-card {
+    @include mixins.card-base;
+    padding: 0;
+    overflow: hidden;
+    
+    .table-header {
+      padding: variables.$spacing-4 variables.$spacing-5;
+      border-bottom: 1px solid variables.$border-primary;
+      
+      @include mixins.mobile {
+        padding: variables.$spacing-3 variables.$spacing-4;
+      }
+      
+      .table-title {
+        @include mixins.heading-4;
+        margin-bottom: 0;
+      }
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    table {
+      width: 100%;
+      margin-bottom: 0;
+      
+      thead {
+        background-color: variables.$color-secondary;
+        
+        th {
+          padding: variables.$spacing-3 variables.$spacing-4;
+          font-weight: variables.$font-weight-semibold;
+          text-align: left;
+          border-bottom: 1px solid variables.$border-primary;
+        }
+      }
+      
+      tbody {
+        tr {
+          &:hover {
+            background-color: rgba(variables.$color-primary, 0.05);
+          }
+          
+          td {
+            padding: variables.$spacing-3 variables.$spacing-4;
+            border-bottom: 1px solid variables.$border-primary;
+            
+            &:first-child {
+              font-weight: variables.$font-weight-semibold;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Dashboard activity
+.dashboard-activity {
+  margin-top: variables.$spacing-6;
+  
+  .activity-card {
+    @include mixins.card-base;
+    
+    .activity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: variables.$spacing-4;
+      
+      .activity-title {
+        @include mixins.heading-4;
+        margin-bottom: 0;
+      }
+    }
+    
+    .activity-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      
+      .activity-item {
+        display: flex;
+        padding: variables.$spacing-3 0;
+        border-bottom: 1px solid variables.$border-primary;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .activity-icon {
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: variables.$border-radius-full;
+          margin-right: variables.$spacing-3;
+          font-size: variables.$font-size-lg;
+          
+          &.icon-blue {
+            background-color: rgba(variables.$color-info, 0.1);
+            color: variables.$color-info;
+          }
+          
+          &.icon-green {
+            background-color: rgba(variables.$color-success, 0.1);
+            color: variables.$color-success;
+          }
+          
+          &.icon-orange {
+            background-color: rgba(variables.$color-accent, 0.1);
+            color: variables.$color-accent;
+          }
+        }
+        
+        .activity-content {
+          flex: 1;
+          
+          .activity-title {
+            font-weight: variables.$font-weight-semibold;
+            margin-bottom: variables.$spacing-1;
+          }
+          
+          .activity-description {
+            font-size: variables.$font-size-sm;
+            color: variables.$color-text-secondary;
+            margin-bottom: variables.$spacing-1;
+          }
+          
+          .activity-time {
+            font-size: variables.$font-size-xs;
+            color: variables.$color-text-tertiary;
+          }
+        }
+      }
+    }
+  }
+}

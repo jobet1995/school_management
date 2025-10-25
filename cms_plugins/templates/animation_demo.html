@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scroll-triggered Animations Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/theme/main.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .demo-content {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .demo-section {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+        }
+        
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .demo-placeholder {
+            height: 500px;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            margin: 2rem 0;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #6B7280;
+        }
+        
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #1E3A8A;
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            font-size: 1.1rem;
+            color: #6B7280;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a class="navbar-brand" href="#">
+                <span>Student Management System</span>
+            </a>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <main class="demo-content">
+        <header class="demo-section">
+            <h1 class="fade-in-up">Scroll-triggered Animations Demo</h1>
+            <p class="fade-in-up animation-delay-1">A demonstration of scroll-triggered animations for the Django CMS Student Management System</p>
+        </header>
+        
+        <section class="demo-section">
+            <h2 class="fade-in-up">Fade-in Animations</h2>
+            <p class="fade-in-up animation-delay-1">These elements will fade in as you scroll down the page.</p>
+            
+            <div class="demo-grid">
+                <div class="card fade-in-up">
+                    <div class="card-body">
+                        <h3 class="card-title">Fade In Up</h3>
+                        <p class="card-text">This card fades in from below when scrolled into view.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="card fade-in-left">
+                    <div class="card-body">
+                        <h3 class="card-title">Fade In Left</h3>
+                        <p class="card-text">This card fades in from the left when scrolled into view.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+                
+                <div class="card fade-in-right">
+                    <div class="card-body">
+                        <h3 class="card-title">Fade In Right</h3>
+                        <p class="card-text">This card fades in from the right when scrolled into view.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="demo-placeholder">
+            <p>Scroll down to see more animations...</p>
+        </div>
+        
+        <section class="demo-section">
+            <h2 class="fade-in-down">Staggered Animations</h2>
+            <p class="fade-in-down animation-delay-1">These elements animate in sequence with staggered delays.</p>
+            
+            <div class="demo-grid staggered-animation staggered-3">
+                <div class="card scale-in">
+                    <div class="card-body">
+                        <h3 class="card-title">Staggered Item 1</h3>
+                        <p class="card-text">This item animates first in the sequence.</p>
+                    </div>
+                </div>
+                
+                <div class="card scale-in">
+                    <div class="card-body">
+                        <h3 class="card-title">Staggered Item 2</h3>
+                        <p class="card-text">This item animates second in the sequence.</p>
+                    </div>
+                </div>
+                
+                <div class="card scale-in">
+                    <div class="card-body">
+                        <h3 class="card-title">Staggered Item 3</h3>
+                        <p class="card-text">This item animates third in the sequence.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="demo-placeholder">
+            <p>Keep scrolling to see counter animations...</p>
+        </div>
+        
+        <section class="demo-section">
+            <h2 class="fade-in-up">Counter Animations</h2>
+            <p class="fade-in-up animation-delay-1">These numbers will count up when scrolled into view.</p>
+            
+            <div class="stats-container">
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="1250" data-duration="3000">0</div>
+                    <div class="stat-label">Students</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="85" data-duration="3000">0</div>
+                    <div class="stat-label">Faculty</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="150" data-duration="3000">0</div>
+                    <div class="stat-label">Courses</div>
+                </div>
+                
+                <div class="stat-item">
+                    <div class="stat-number counter" data-target="98" data-duration="3000">0</div>
+                    <div class="stat-label">Graduation Rate</div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="demo-placeholder">
+            <p>Scroll to the bottom to see final animations...</p>
+        </div>
+        
+        <section class="demo-section">
+            <h2 class="fade-in">Hover Effects</h2>
+            <p class="fade-in animation-delay-1">These elements have hover effects with scale and shadow transitions.</p>
+            
+            <div class="demo-grid">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Interactive Card</h3>
+                        <p class="card-text">Hover over this card to see the scale and shadow effect.</p>
+                        <a href="#" class="btn btn-primary">Hover Me</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Another Card</h3>
+                        <p class="card-text">This card also has interactive hover effects.</p>
+                        <a href="#" class="btn btn-secondary">Hover Me</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-bottom">
+                <div class="footer-copyright">
+                    <p class="fade-in">&copy; 2025 Student Management System. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Include animation JavaScript -->
+    <script src="../static/js/animations.js"></script>
+</body>
+</html>

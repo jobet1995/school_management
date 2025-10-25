@@ -1,0 +1,262 @@
+// Animations
+@use '../base/variables';
+@use '../base/mixins';
+
+// Animation variables
+$transition-fast: 0.3s ease;
+$transition-normal: 0.5s ease;
+$transition-slow: 0.8s ease;
+
+// Fade animations
+.fade-in {
+  opacity: 0;
+  transition: opacity $transition-normal;
+  
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity $transition-normal, transform $transition-normal;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-down {
+  opacity: 0;
+  transform: translateY(-30px);
+  transition: opacity $transition-normal, transform $transition-normal;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: opacity $transition-normal, transform $transition-normal;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.fade-in-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: opacity $transition-normal, transform $transition-normal;
+  
+  &.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// Scale animations
+.scale-in {
+  transform: scale(0.9);
+  opacity: 0;
+  transition: transform $transition-normal, opacity $transition-normal;
+  
+  &.visible {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Staggered animations
+.staggered-animation {
+  .fade-in-up,
+  .fade-in-down,
+  .fade-in-left,
+  .fade-in-right,
+  .scale-in {
+    transition-delay: 0s;
+  }
+  
+  &.staggered-1 .fade-in-up:nth-child(1),
+  &.staggered-1 .fade-in-down:nth-child(1),
+  &.staggered-1 .fade-in-left:nth-child(1),
+  &.staggered-1 .fade-in-right:nth-child(1),
+  &.staggered-1 .scale-in:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  
+  &.staggered-2 .fade-in-up:nth-child(2),
+  &.staggered-2 .fade-in-down:nth-child(2),
+  &.staggered-2 .fade-in-left:nth-child(2),
+  &.staggered-2 .fade-in-right:nth-child(2),
+  &.staggered-2 .scale-in:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+  
+  &.staggered-3 .fade-in-up:nth-child(3),
+  &.staggered-3 .fade-in-down:nth-child(3),
+  &.staggered-3 .fade-in-left:nth-child(3),
+  &.staggered-3 .fade-in-right:nth-child(3),
+  &.staggered-3 .scale-in:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+  
+  &.staggered-4 .fade-in-up:nth-child(4),
+  &.staggered-4 .fade-in-down:nth-child(4),
+  &.staggered-4 .fade-in-left:nth-child(4),
+  &.staggered-4 .fade-in-right:nth-child(4),
+  &.staggered-4 .scale-in:nth-child(4) {
+    transition-delay: 0.4s;
+  }
+  
+  &.staggered-5 .fade-in-up:nth-child(5),
+  &.staggered-5 .fade-in-down:nth-child(5),
+  &.staggered-5 .fade-in-left:nth-child(5),
+  &.staggered-5 .fade-in-right:nth-child(5),
+  &.staggered-5 .scale-in:nth-child(5) {
+    transition-delay: 0.5s;
+  }
+}
+
+// Hover effects for interactive elements
+.btn,
+.card,
+.interactive-element {
+  transition: all $transition-fast;
+  
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  &:active {
+    transform: translateY(-1px);
+  }
+}
+
+.card {
+  &:hover {
+    transform: translateY(-5px) scale(1.01);
+  }
+}
+
+// Counter animations
+.counter {
+  display: inline-block;
+  font-weight: variables.$font-weight-bold;
+  font-size: variables.$font-size-3xl;
+  
+  &.counting {
+    transition: all $transition-slow;
+  }
+}
+
+// Animation delays
+.animation-delay-1 {
+  animation-delay: 0.1s;
+}
+
+.animation-delay-2 {
+  animation-delay: 0.2s;
+}
+
+.animation-delay-3 {
+  animation-delay: 0.3s;
+}
+
+.animation-delay-4 {
+  animation-delay: 0.4s;
+}
+
+.animation-delay-5 {
+  animation-delay: 0.5s;
+}
+
+// Keyframe animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Animation utilities
+.animate-fade-in {
+  animation: fadeIn $transition-normal ease-in-out;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp $transition-normal ease-in-out;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown $transition-normal ease-in-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn $transition-normal ease-in-out;
+}
+
+// Responsive adjustments
+@include mixins.mobile {
+  .fade-in-up,
+  .fade-in-down,
+  .fade-in-left,
+  .fade-in-right,
+  .scale-in {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  
+  .staggered-animation {
+    .fade-in-up,
+    .fade-in-down,
+    .fade-in-left,
+    .fade-in-right,
+    .scale-in {
+      transition-delay: 0s !important;
+    }
+  }
+}

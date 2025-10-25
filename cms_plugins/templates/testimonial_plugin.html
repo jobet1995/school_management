@@ -1,0 +1,25 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/testimonial.css' %}">
+
+<div class="testimonial-container">
+    <div class="testimonial-slider">
+        {% for testimonial in testimonials %}
+            <div class="testimonial-item {% if testimonial.is_featured %}featured{% endif %}" data-testimonial-id="{{ testimonial.id }}">
+                <div class="testimonial-content">
+                    <p class="testimonial-text">"{{ testimonial.testimonial }}"</p>
+                    <div class="testimonial-author">
+                        {% if testimonial.photo %}
+                            <img src="{{ testimonial.photo.url }}" alt="{{ testimonial.name }}" class="author-photo">
+                        {% endif %}
+                        <div class="author-info">
+                            <h4 class="author-name">{{ testimonial.name }}</h4>
+                            {% if testimonial.course %}
+                                <p class="author-course">{{ testimonial.course }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

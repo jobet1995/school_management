@@ -1,0 +1,297 @@
+// Card Components
+@use '../base/variables';
+@use '../base/mixins';
+
+// Base card styles
+.card {
+  @include mixins.card-base;
+  margin-bottom: variables.$spacing-6;
+  
+  @include mixins.mobile {
+    margin-bottom: variables.$spacing-4;
+  }
+}
+
+.card-body {
+  flex: 1 1 auto;
+  min-height: 1px;
+  padding: variables.$spacing-6;
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-4;
+  }
+}
+
+.card-title {
+  font-family: variables.$font-primary;
+  font-size: variables.$font-size-2xl;
+  font-weight: variables.$font-weight-semibold;
+  line-height: 1.4;
+  color: variables.$color-text-primary;
+  margin-bottom: variables.$spacing-3;
+  
+  @include mixins.tablet {
+    font-size: variables.$font-size-xl;
+  }
+  
+  @include mixins.mobile {
+    font-size: variables.$font-size-lg;
+  }
+}
+
+.card-subtitle {
+  font-family: variables.$font-primary;
+  font-size: variables.$font-size-xl;
+  font-weight: variables.$font-weight-semibold;
+  line-height: 1.5;
+  color: variables.$color-text-primary;
+  margin-top: -(variables.$spacing-3);
+  margin-bottom: variables.$spacing-3;
+  
+  @include mixins.tablet {
+    font-size: variables.$font-size-lg;
+  }
+  
+  @include mixins.mobile {
+    font-size: variables.$font-size-base;
+  }
+}
+
+.card-text {
+  font-family: variables.$font-secondary;
+  font-size: variables.$font-size-base;
+  font-weight: variables.$font-weight-normal;
+  line-height: 1.6;
+  color: variables.$color-text-primary;
+  margin-bottom: variables.$spacing-4;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.card-link {
+  font-weight: variables.$font-weight-semibold;
+  
+  + .card-link {
+    margin-left: variables.$spacing-4;
+  }
+}
+
+.card-header {
+  padding: variables.$spacing-4 variables.$spacing-6;
+  margin-bottom: 0;
+  background-color: variables.$color-secondary;
+  border-bottom: 1px solid variables.$border-primary;
+  border-top-left-radius: variables.$border-radius-md;
+  border-top-right-radius: variables.$border-radius-md;
+  
+  &:first-child {
+    border-radius: variables.$border-radius-md variables.$border-radius-md 0 0;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-3 variables.$spacing-4;
+  }
+}
+
+.card-footer {
+  padding: variables.$spacing-4 variables.$spacing-6;
+  background-color: variables.$color-secondary;
+  border-top: 1px solid variables.$border-primary;
+  border-bottom-right-radius: variables.$border-radius-md;
+  border-bottom-left-radius: variables.$border-radius-md;
+  
+  &:last-child {
+    border-radius: 0 0 variables.$border-radius-md variables.$border-radius-md;
+  }
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-3 variables.$spacing-4;
+  }
+}
+
+// Card image
+.card-img-top {
+  width: 100%;
+  border-top-left-radius: variables.$border-radius-md;
+  border-top-right-radius: variables.$border-radius-md;
+}
+
+.card-img-bottom {
+  width: 100%;
+  border-bottom-right-radius: variables.$border-radius-md;
+  border-bottom-left-radius: variables.$border-radius-md;
+}
+
+.card-img {
+  width: 100%;
+  border-radius: variables.$border-radius-md;
+}
+
+.card-img-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: variables.$spacing-6;
+  border-radius: variables.$border-radius-md;
+  
+  @include mixins.mobile {
+    padding: variables.$spacing-4;
+  }
+}
+
+// Card variants
+.card-bordered {
+  border: 1px solid variables.$border-primary;
+  box-shadow: none;
+}
+
+.card-static {
+  box-shadow: none;
+  transition: none;
+  
+  &:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+.card-flat {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+// Card layout
+.card-group {
+  display: flex;
+  flex-direction: column;
+  
+  > .card {
+    margin-bottom: 0;
+    border-radius: 0;
+    
+    + .card {
+      border-top: 0;
+    }
+    
+    &:first-child {
+      border-top-left-radius: variables.$border-radius-md;
+      border-top-right-radius: variables.$border-radius-md;
+      
+      .card-img-top,
+      .card-header {
+        border-top-left-radius: variables.$border-radius-md;
+        border-top-right-radius: variables.$border-radius-md;
+      }
+    }
+    
+    &:last-child {
+      border-bottom-right-radius: variables.$border-radius-md;
+      border-bottom-left-radius: variables.$border-radius-md;
+      
+      .card-img-bottom,
+      .card-footer {
+        border-bottom-right-radius: variables.$border-radius-md;
+        border-bottom-left-radius: variables.$border-radius-md;
+      }
+    }
+  }
+  
+  @include mixins.tablet-and-up {
+    flex-direction: row;
+    
+    > .card {
+      flex: 1 0 0%;
+      margin-bottom: 0;
+      
+      + .card {
+        margin-left: 0;
+        border-left: 0;
+      }
+      
+      &:first-child {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        
+        .card-img-top,
+        .card-header {
+          border-top-right-radius: 0;
+        }
+        
+        .card-img-bottom,
+        .card-footer {
+          border-bottom-right-radius: 0;
+        }
+      }
+      
+      &:last-child {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        
+        .card-img-top,
+        .card-header {
+          border-top-left-radius: 0;
+        }
+        
+        .card-img-bottom,
+        .card-footer {
+          border-bottom-left-radius: 0;
+        }
+      }
+      
+      &:only-child {
+        border-radius: variables.$border-radius-md;
+        
+        .card-img-top,
+        .card-header {
+          border-top-left-radius: variables.$border-radius-md;
+          border-top-right-radius: variables.$border-radius-md;
+        }
+        
+        .card-img-bottom,
+        .card-footer {
+          border-bottom-right-radius: variables.$border-radius-md;
+          border-bottom-left-radius: variables.$border-radius-md;
+        }
+      }
+      
+      &:not(:first-child):not(:last-child):not(:only-child) {
+        border-radius: 0;
+        
+        .card-img-top,
+        .card-img-bottom,
+        .card-header,
+        .card-footer {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+}
+
+.card-deck {
+  display: flex;
+  flex-direction: column;
+  
+  .card {
+    margin-bottom: variables.$spacing-4;
+  }
+  
+  @include mixins.tablet-and-up {
+    flex-flow: row wrap;
+    margin-right: -(variables.$spacing-4);
+    margin-left: -(variables.$spacing-4);
+    
+    .card {
+      display: flex;
+      flex: 1 0 0%;
+      flex-direction: column;
+      margin-right: variables.$spacing-4;
+      margin-bottom: 0;
+      margin-left: variables.$spacing-4;
+    }
+  }
+}

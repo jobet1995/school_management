@@ -1,0 +1,462 @@
+// Admissions Page
+@use '../base/variables';
+@use '../base/mixins';
+
+// Admissions header
+.admissions-header {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  
+  @include mixins.tablet {
+    min-height: 300px;
+  }
+  
+  @include mixins.mobile {
+    min-height: 250px;
+  }
+  
+  // Overlay
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(variables.$color-primary, 0.85);
+    z-index: 1;
+  }
+  
+  .header-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 800px;
+    padding: 0 variables.$spacing-4;
+    color: variables.$bg-primary;
+    
+    .header-title {
+      @include mixins.heading-1;
+      margin-bottom: variables.$spacing-4;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-4xl;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-3xl;
+      }
+    }
+    
+    .header-description {
+      @include mixins.body-text;
+      font-size: variables.$font-size-xl;
+      margin-bottom: variables.$spacing-6;
+      
+      @include mixins.tablet {
+        font-size: variables.$font-size-lg;
+      }
+      
+      @include mixins.mobile {
+        font-size: variables.$font-size-base;
+      }
+    }
+    
+    .header-cta {
+      @include mixins.button-accent;
+      font-size: variables.$font-size-lg;
+      padding: variables.$spacing-3 variables.$spacing-8;
+      
+      @include mixins.mobile {
+        padding: variables.$spacing-3 variables.$spacing-6;
+        font-size: variables.$font-size-base;
+      }
+    }
+  }
+}
+
+// Admissions navigation
+.admissions-nav {
+  background-color: variables.$bg-primary;
+  border-bottom: 1px solid variables.$border-primary;
+  position: sticky;
+  top: 0;
+  z-index: variables.$z-index-sticky;
+  
+  .nav-container {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 variables.$spacing-4;
+    
+    @include mixins.tablet {
+      padding: 0 variables.$spacing-6;
+    }
+    
+    @include mixins.desktop {
+      padding: 0 variables.$spacing-8;
+    }
+  }
+  
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    min-width: 100%;
+    
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      
+      .nav-link {
+        display: block;
+        padding: variables.$spacing-4 variables.$spacing-3;
+        color: variables.$color-text-secondary;
+        text-decoration: none;
+        font-weight: variables.$font-weight-medium;
+        transition: all variables.$transition-fast;
+        white-space: nowrap;
+        
+        &:hover,
+        &.active {
+          color: variables.$color-primary;
+          border-bottom: 3px solid variables.$color-primary;
+        }
+      }
+    }
+  }
+}
+
+// Admissions content
+.admissions-content {
+  padding: variables.$spacing-8 0;
+  
+  .content-container {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  .section {
+    margin-bottom: variables.$spacing-10;
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+    
+    .section-title {
+      @include mixins.heading-2;
+      margin-bottom: variables.$spacing-6;
+      text-align: center;
+    }
+    
+    .section-description {
+      @include mixins.body-text;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto variables.$spacing-6;
+      color: variables.$color-text-secondary;
+    }
+  }
+}
+
+// Admission requirements
+.admission-requirements {
+  .requirements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .requirement-card {
+    @include mixins.card-base;
+    text-align: center;
+    
+    .requirement-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: variables.$border-radius-full;
+      margin: 0 auto variables.$spacing-4;
+      font-size: variables.$font-size-3xl;
+      background-color: rgba(variables.$color-primary, 0.1);
+      color: variables.$color-primary;
+    }
+    
+    .requirement-title {
+      @include mixins.heading-4;
+      margin-bottom: variables.$spacing-3;
+    }
+    
+    .requirement-description {
+      @include mixins.body-text;
+      color: variables.$color-text-secondary;
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Application process
+.application-process {
+  .process-steps {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    margin: variables.$spacing-8 0;
+    
+    @include mixins.tablet-and-down {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: variables.$border-primary;
+      z-index: 1;
+      
+      @include mixins.tablet-and-down {
+        display: none;
+      }
+    }
+  }
+  
+  .step {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    max-width: 200px;
+    
+    @include mixins.tablet-and-down {
+      display: flex;
+      align-items: center;
+      max-width: 100%;
+      margin-bottom: variables.$spacing-6;
+      
+      &:last-child {
+        margin-bottom: 0;
+      }
+      
+      &::before {
+        content: '';
+        position: absolute;
+        left: 30px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background-color: variables.$border-primary;
+      }
+    }
+    
+    .step-number {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: variables.$border-radius-full;
+      margin: 0 auto variables.$spacing-3;
+      font-family: variables.$font-primary;
+      font-size: variables.$font-size-2xl;
+      font-weight: variables.$font-weight-bold;
+      background-color: variables.$color-primary;
+      color: variables.$bg-primary;
+      
+      @include mixins.tablet-and-down {
+        margin: 0 variables.$spacing-4 0 0;
+      }
+    }
+    
+    .step-title {
+      @include mixins.heading-5;
+      margin-bottom: variables.$spacing-2;
+    }
+    
+    .step-description {
+      @include mixins.body-text;
+      font-size: variables.$font-size-sm;
+      color: variables.$color-text-secondary;
+      margin-bottom: 0;
+    }
+  }
+}
+
+// Important dates
+.important-dates {
+  .dates-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .date-card {
+    @include mixins.card-base;
+    display: flex;
+    align-items: center;
+    
+    .date-icon {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: variables.$border-radius-full;
+      margin-right: variables.$spacing-4;
+      font-size: variables.$font-size-xl;
+      background-color: rgba(variables.$color-accent, 0.1);
+      color: variables.$color-accent;
+    }
+    
+    .date-info {
+      flex: 1;
+      
+      .date-title {
+        @include mixins.heading-5;
+        margin-bottom: variables.$spacing-1;
+      }
+      
+      .date-value {
+        @include mixins.body-text;
+        font-weight: variables.$font-weight-semibold;
+        color: variables.$color-text-secondary;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+// Contact information
+.contact-information {
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: variables.$spacing-6;
+    
+    @include mixins.tablet {
+      gap: variables.$spacing-4;
+    }
+    
+    @include mixins.mobile {
+      grid-template-columns: 1fr;
+      gap: variables.$spacing-4;
+    }
+  }
+  
+  .contact-card {
+    @include mixins.card-base;
+    text-align: center;
+    
+    .contact-icon {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: variables.$border-radius-full;
+      margin: 0 auto variables.$spacing-4;
+      font-size: variables.$font-size-3xl;
+      background-color: rgba(variables.$color-info, 0.1);
+      color: variables.$color-info;
+    }
+    
+    .contact-title {
+      @include mixins.heading-4;
+      margin-bottom: variables.$spacing-3;
+    }
+    
+    .contact-details {
+      @include mixins.body-text;
+      color: variables.$color-text-secondary;
+      margin-bottom: variables.$spacing-3;
+    }
+    
+    .contact-link {
+      @include mixins.button-outline-primary;
+      display: inline-block;
+    }
+  }
+}
+
+// FAQ section
+.faq-section {
+  .faq-list {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .faq-item {
+    @include mixins.card-base;
+    margin-bottom: variables.$spacing-4;
+    
+    .faq-question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: variables.$spacing-4;
+      cursor: pointer;
+      
+      .question-text {
+        @include mixins.heading-5;
+        margin-bottom: 0;
+      }
+      
+      .question-icon {
+        font-size: variables.$font-size-xl;
+        transition: transform variables.$transition-fast;
+      }
+    }
+    
+    .faq-answer {
+      padding: 0 variables.$spacing-4 variables.$spacing-4;
+      display: none;
+      
+      &.show {
+        display: block;
+      }
+      
+      .answer-content {
+        @include mixins.body-text;
+        margin-bottom: 0;
+      }
+    }
+    
+    &.active {
+      .faq-question {
+        .question-icon {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
+}

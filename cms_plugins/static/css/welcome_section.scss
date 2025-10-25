@@ -1,0 +1,204 @@
+.welcome-section {
+  position: relative;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin: 1rem 0;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  
+  &.fade-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .welcome-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: 8px;
+    
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+  
+  .welcome-content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 300px;
+    
+    h2 {
+      color: #333;
+      margin-top: 0;
+      border-bottom: 2px solid #007bff;
+      padding-bottom: 0.5rem;
+    }
+  }
+  
+  // Background image variant
+  &.background {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+    color: white;
+    text-align: center;
+    
+    .welcome-content {
+      max-width: 800px;
+      padding: 2rem;
+      color: white;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      
+      h2 {
+        color: white;
+        border-bottom: 2px solid rgba(255,255,255,0.5);
+      }
+    }
+    
+    .welcome-text {
+      color: white;
+    }
+    
+    .welcome-cta-button {
+      background-color: white;
+      color: #007bff;
+      border: 2px solid white;
+      
+      &:hover {
+        background-color: transparent;
+        color: white;
+      }
+    }
+  }
+  
+  .welcome-text {
+    line-height: 1.6;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  .welcome-cta-button {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 2px solid #007bff;
+    
+    &:hover {
+      background-color: transparent;
+      color: #007bff;
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+  }
+  
+  .welcome-image {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+  }
+  
+  // Image alignment
+  &.left {
+    flex-direction: row-reverse;
+  }
+  
+  &.right {
+    flex-direction: row;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcome-section {
+    flex-direction: column;
+    padding: 1.5rem;
+    
+    &.left,
+    &.right {
+      flex-direction: column;
+    }
+    
+    .welcome-content,
+    .welcome-image {
+      min-width: 100%;
+    }
+    
+    &.background {
+      min-height: 300px;
+      
+      .welcome-content {
+        padding: 1rem;
+      }
+    }
+    
+    .welcome-content {
+      h2 {
+        font-size: 1.5rem;
+      }
+    }
+    
+    .welcome-text {
+      font-size: 0.9rem;
+    }
+    
+    .welcome-cta-button {
+      padding: 10px 20px;
+      font-size: 0.9rem;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-section {
+    padding: 1rem;
+    margin: 0.5rem 0;
+    
+    .welcome-content {
+      h2 {
+        font-size: 1.3rem;
+      }
+    }
+    
+    .welcome-text {
+      font-size: 0.85rem;
+    }
+    
+    .welcome-cta-button {
+      padding: 8px 16px;
+      font-size: 0.85rem;
+    }
+    
+    &.background {
+      min-height: 250px;
+    }
+  }
+}
