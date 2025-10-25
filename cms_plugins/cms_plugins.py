@@ -22,7 +22,9 @@ from .models import (
     NavbarItemChild,
     StudentDashboardPlugin,
     LiveNotificationsPlugin,
-    PerformanceAnalyticsPlugin  # Add our new plugin model
+    PerformanceAnalyticsPlugin,  # Add our new plugin model
+    AttendanceTrackerPlugin,
+    StudyRecommendationPlugin  # Add our new plugin model
 )
 
 
@@ -506,4 +508,72 @@ class PerformanceAnalyticsPluginPublisher(CMSPluginBase):
         
         context['chart_data'] = chart_data
         context['default_time_range'] = instance.default_time_range
+        return context
+
+
+@plugin_pool.register_plugin
+class AttendanceTrackerPluginPublisher(CMSPluginBase):
+    model = AttendanceTrackerPlugin
+    name = _("Attendance Tracker Plugin")
+    render_template = "attendance_tracker_plugin.html"
+    cache = False
+    
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+                'course',
+                'date',
+            )
+        }),
+    )
+    
+    class Media:
+        css = {
+            'all': (
+                static('css/attendance_tracker.css'),
+                static('css/loading_spinner.css'),
+            )
+        }
+        js = (
+            static('js/attendance_tracker.js'),
+            static('js/loading_spinner.js'),
+        )
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        # We're loading attendance data via AJAX, so we don't need to pass it in the context
+        return context
+
+@plugin_pool.register_plugin  # Add our new plugin publisher
+class StudyRecommendationPluginPublisher(CMSPluginBase):
+    model = StudyRecommendationPlugin
+    name = _("Study Recommendation Plugin")
+    render_template = "study_recommendation_plugin.html"
+    cache = False
+    
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+                'number_of_recommendations',
+            )
+        }),
+    )
+    
+    class Media:
+        css = {
+            'all': (
+                static('css/study_recommendation.css'),
+                static('css/loading_spinner.css'),
+            )
+        }
+        js = (
+            static('js/study_recommendation.js'),
+            static('js/loading_spinner.js'),
+        )
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        # We're loading recommendations via AJAX, so we don't need to pass them in the context
         return context

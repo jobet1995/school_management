@@ -19,7 +19,10 @@ from .models import (
     StudentDashboardPlugin,
     LiveNotification,
     LiveNotificationsPlugin,
-    PerformanceAnalyticsPlugin
+    PerformanceAnalyticsPlugin,
+    AttendanceTrackerPlugin,
+    Attendance,
+    Enrollment
 )
 
 # Create your views here.
@@ -266,12 +269,11 @@ class CourseSearchAjaxView(View):
             
             # Apply search filter if query exists
             if query:
-                courses_query = courses_query.filter(
-                    Q(title__icontains=query) | 
-                    Q(code__icontains=query) | 
-                    Q(description__icontains=query) | 
-                    Q(instructor__icontains=query)
-                )
+                # Using union of separate queries to avoid type checking errors with Q objects
+                courses_query = (courses_query.filter(title__icontains=query)
+                             .union(courses_query.filter(code__icontains=query))
+                             .union(courses_query.filter(description__icontains=query))
+                             .union(courses_query.filter(instructor__icontains=query)))
             
             # Limit results to 10
             courses = list(courses_query[:10])
@@ -296,6 +298,138 @@ class CourseSearchAjaxView(View):
                 'courses': courses_data,
                 'query': query,
                 'count': len(courses_data)
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+class AttendanceTrackerUpdateView(View):
+    """
+    AJAX view to update student attendance records
+    """
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    def post(self, request, plugin_id):
+        """
+        Update attendance status for a specific student enrollment
+        """
+        try:
+            # Get the plugin instance
+            plugin = get_object_or_404(AttendanceTrackerPlugin, id=plugin_id)
+            
+            # Get parameters from POST data
+            enrollment_id = request.POST.get('enrollment_id')
+            status = request.POST.get('status')  # 'present' or 'absent'
+            search_query = request.POST.get('search_query', '')
+            
+            # Validate enrollment_id
+            if not enrollment_id:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Enrollment ID is required'
+                }, status=400)
+            
+            # Validate status
+            if status not in ['present', 'absent']:
+                return JsonResponse({
+                    'success': False,
+                    'error': 'Invalid status value'
+                }, status=400)
+            
+            # Get the enrollment
+            enrollment = get_object_or_404(Enrollment, id=enrollment_id, is_active=True)
+            
+            # Determine if student is present
+            is_present = (status == 'present')
+            
+            # Get or create attendance record for this student, course, and date
+            attendance, created = Attendance.objects.get_or_create(
+                student=enrollment.student,
+                course=enrollment.course,
+                date=plugin.date,
+                defaults={
+                    'is_present': is_present,
+                    'is_excused': False
+                }
+            )
+            
+            # If record already existed, update it
+            if not created:
+                attendance.is_present = is_present
+                attendance.save()
+            
+            # Get updated attendance data
+            attendance_data = plugin.get_attendance_data(search_query)
+            
+            # Return JSON response with updated data
+            return JsonResponse({
+                'success': True,
+                'message': f'Attendance updated successfully',
+                'attendance_data': attendance_data
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+class StudyRecommendationsAjaxView(View):
+    """
+    AJAX view to fetch study recommendations with filtering capabilities
+    """
+    
+    def get(self, request, plugin_id):
+        """
+        Return study recommendations for a specific plugin instance with optional filtering
+        """
+        try:
+            # Import here to avoid circular imports
+            from .models import StudyRecommendationPlugin, Student
+            
+            # Get the plugin instance
+            plugin = get_object_or_404(StudyRecommendationPlugin, id=plugin_id)
+            
+            # Get filter parameters
+            difficulty_filter = request.GET.get('difficulty', '')
+            subject_filter = request.GET.get('subject', '')
+            
+            # In a real implementation, you would get the student from the authenticated user
+            # For now, we'll demonstrate with a sample student or None
+            student = None
+            student_id = request.GET.get('student_id')
+            if student_id:
+                try:
+                    student = Student.objects.get(id=student_id)
+                except Student.DoesNotExist:  # type: ignore
+                    pass
+            
+            # Get recommendations with filtering
+            recommendations_data = plugin.get_recommendations(
+                student=student,
+                difficulty_filter=difficulty_filter,
+                subject_filter=subject_filter
+            )
+            
+            # Get filter choices
+            subject_choices = plugin.get_subject_choices()
+            difficulty_choices = plugin.get_difficulty_choices()
+            
+            # Return JSON response
+            return JsonResponse({
+                'success': True,
+                'recommendations': recommendations_data,
+                'title': plugin.title,
+                'filters': {
+                    'subjects': [{'value': choice[0], 'label': choice[1]} for choice in subject_choices],
+                    'difficulties': [{'value': choice[0], 'label': choice[1]} for choice in difficulty_choices],
+                    'current_difficulty': difficulty_filter,
+                    'current_subject': subject_filter
+                }
             })
         except Exception as e:
             return JsonResponse({

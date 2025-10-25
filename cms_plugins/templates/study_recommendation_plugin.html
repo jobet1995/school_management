@@ -1,0 +1,166 @@
+{% load static %}
+<div class="study-recommendation-plugin">
+    <h2 class="section-title">{{ instance.title }}</h2>
+    
+    <div class="filters-container">
+        <div class="filter-group">
+            <label for="subjectFilter-{{ instance.id }}">Subject:</label>
+            <select id="subjectFilter-{{ instance.id }}" class="filter-select">
+                <option value="">All Subjects</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label for="difficultyFilter-{{ instance.id }}">Difficulty:</label>
+            <select id="difficultyFilter-{{ instance.id }}" class="filter-select">
+                <option value="">All Levels</option>
+            </select>
+        </div>
+        
+        <button id="resetFilters-{{ instance.id }}" class="reset-filters-btn">Reset Filters</button>
+    </div>
+    
+    <div class="results-container" id="recommendationsResults-{{ instance.id }}">
+        <div class="loading">Loading recommendations...</div>
+    </div>
+</div>
+
+<script>
+(function($) {
+    $(document).ready(function() {
+        const pluginId = '{{ instance.id }}';
+        const $subjectFilter = $('#subjectFilter-' + pluginId);
+        const $difficultyFilter = $('#difficultyFilter-' + pluginId);
+        const $resetFiltersBtn = $('#resetFilters-' + pluginId);
+        const $recommendationsResults = $('#recommendationsResults-' + pluginId);
+        
+        // Initialize the plugin
+        initializePlugin(pluginId);
+        
+        // Filter change handlers
+        $subjectFilter.on('change', function() {
+            loadRecommendations(pluginId);
+        });
+        
+        $difficultyFilter.on('change', function() {
+            loadRecommendations(pluginId);
+        });
+        
+        // Reset filters handler
+        $resetFiltersBtn.on('click', function() {
+            $subjectFilter.val('');
+            $difficultyFilter.val('');
+            loadRecommendations(pluginId);
+        });
+        
+        // Initialize plugin with filters
+        function initializePlugin(pluginId) {
+            // Load initial recommendations and filters
+            loadRecommendations(pluginId);
+        }
+        
+        // Load recommendations with current filters
+        function loadRecommendations(pluginId) {
+            const subject = $subjectFilter.val();
+            const difficulty = $difficultyFilter.val();
+            
+            // Show loading state
+            $recommendationsResults.html('<div class="loading">Loading recommendations...</div>');
+            
+            $.ajax({
+                url: '{% url "cms_plugins:study_recommendations_ajax" plugin_id=instance.id %}',
+                method: 'GET',
+                data: {
+                    'subject': subject,
+                    'difficulty': difficulty
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        // Update filters if this is the first load
+                        if (response.filters) {
+                            updateFilters(response.filters, pluginId);
+                        }
+                        
+                        // Display recommendations
+                        displayRecommendations(response.recommendations, pluginId);
+                    } else {
+                        $recommendationsResults.html('<div class="no-results">Error loading recommendations. Please try again.</div>');
+                    }
+                },
+                error: function() {
+                    $recommendationsResults.html('<div class="no-results">Error loading recommendations. Please try again.</div>');
+                }
+            });
+        }
+        
+        // Update filter dropdowns
+        function updateFilters(filters, pluginId) {
+            const $subjectFilter = $('#subjectFilter-' + pluginId);
+            const $difficultyFilter = $('#difficultyFilter-' + pluginId);
+            
+            // Clear existing options
+            $subjectFilter.empty().append('<option value="">All Subjects</option>');
+            $difficultyFilter.empty().append('<option value="">All Levels</option>');
+            
+            // Add subject options
+            filters.subjects.forEach(function(subject) {
+                const selected = subject.value === filters.current_subject ? 'selected' : '';
+                $subjectFilter.append(`<option value="${subject.value}" ${selected}>${subject.label}</option>`);
+            });
+            
+            // Add difficulty options
+            filters.difficulties.forEach(function(difficulty) {
+                const selected = difficulty.value === filters.current_difficulty ? 'selected' : '';
+                $difficultyFilter.append(`<option value="${difficulty.value}" ${selected}>${difficulty.label}</option>`);
+            });
+        }
+        
+        // Display recommendations
+        function displayRecommendations(recommendations, pluginId) {
+            const $recommendationsResults = $('#recommendationsResults-' + pluginId);
+            
+            if (recommendations.length === 0) {
+                $recommendationsResults.html('<div class="no-results">No recommendations found matching your criteria.</div>');
+                return;
+            }
+            
+            let html = '<div class="recommendations-grid">';
+            
+            recommendations.forEach(function(recommendation, index) {
+                html += `
+                    <div class="recommendation-card fade-in" style="transition-delay: ${index * 0.1}s">
+                        <div class="card-body">
+                            <span class="course-code">${recommendation.code}</span>
+                            <h3 class="course-title">${recommendation.title}</h3>
+                            <p class="course-description">${recommendation.description.substring(0, 150)}${recommendation.description.length > 150 ? '...' : ''}</p>
+                            <div class="course-meta">
+                                <span class="instructor">Instructor: ${recommendation.instructor}</span>
+                                <span class="credits">Credits: ${recommendation.credits}</span>
+                                <span class="category">Category: ${recommendation.category}</span>
+                                <span class="difficulty">Difficulty: ${recommendation.difficulty_level}</span>
+                            </div>
+                            <div class="recommendation-score">
+                                Match Score: ${recommendation.score}/100
+                            </div>
+                            <div class="card-actions">
+                                <a href="${recommendation.link}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            $recommendationsResults.html(html);
+            
+            // Trigger fade-in animation
+            setTimeout(function() {
+                $('#recommendationsResults-' + pluginId + ' .recommendation-card').each(function(index) {
+                    $(this).addClass('show');
+                });
+            }, 50);
+        }
+    });
+})(django.jQuery);
+</script>

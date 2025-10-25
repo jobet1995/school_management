@@ -1,0 +1,80 @@
+{% load static %}
+<div class="attendance-tracker" data-plugin-id="{{ instance.id }}">
+    <div class="attendance-header">
+        <h2>{{ instance.title }}</h2>
+        <div class="attendance-summary">
+            <div class="progress-container">
+                <span class="progress-label">Attendance Completion: <span id="completion-percentage">{{ attendance_data.completion_percentage }}%</span></span>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: {{ attendance_data.completion_percentage }}%"></div>
+                </div>
+            </div>
+            <div class="stats">
+                <span class="stat-item">Total Students: <span id="total-students">{{ attendance_data.total_students }}</span></span>
+                <span class="stat-item">Present: <span id="marked-present">{{ attendance_data.marked_present }}</span></span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="attendance-controls">
+        <div class="search-container">
+            <input type="text" id="attendance-search" class="search-input" placeholder="Search students or courses...">
+            <button id="search-btn" class="search-btn">Search</button>
+        </div>
+        <div class="date-display">
+            Attendance Date: <strong>{{ instance.date }}</strong>
+        </div>
+    </div>
+    
+    <div class="attendance-table-container">
+        <table class="attendance-table">
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Course</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="attendance-table-body">
+                {% for item in attendance_data.attendance_data %}
+                <tr data-enrollment-id="{{ item.enrollment_id }}" data-attendance-id="{{ item.attendance_id|default:'' }}">
+                    <td>{{ item.student_name }}</td>
+                    <td>{{ item.course_code }} - {{ item.course_name }}</td>
+                    <td class="status-cell">
+                        <span class="status-badge {% if item.is_present %}present{% else %}absent{% endif %}">
+                            {% if item.is_present %}Present{% else %}Absent{% endif %}
+                        </span>
+                        {% if item.is_excused %}
+                        <span class="excused-badge">Excused</span>
+                        {% endif %}
+                    </td>
+                    <td class="action-cell">
+                        <button class="btn-toggle-attendance {% if item.is_present %}present{% else %}absent{% endif %}" 
+                                data-enrollment="{{ item.enrollment_id }}"
+                                data-status="{% if item.is_present %}present{% else %}absent{% endif %}">
+                            {% if item.is_present %}Mark Absent{% else %}Mark Present{% endif %}
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <div class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Updating attendance...</p>
+    </div>
+    
+    <div class="notification-container">
+        <div id="success-notification" class="notification success" style="display: none;">
+            <span class="notification-message"></span>
+            <button class="notification-close">&times;</button>
+        </div>
+        <div id="error-notification" class="notification error" style="display: none;">
+            <span class="notification-message"></span>
+            <button class="notification-close">&times;</button>
+        </div>
+    </div>
+</div>

@@ -12,4 +12,6 @@ urlpatterns = [
     path('featured-announcements/detail/<int:announcement_id>/', views.FeaturedAnnouncementDetailView.as_view(), name='featured_announcement_detail'),
     path('upcoming-events/<int:plugin_id>/', views.UpcomingEventsAjaxView.as_view(), name='upcoming_events_ajax'),
     path('course-search/', views.CourseSearchAjaxView.as_view(), name='course_search_ajax'),
+    path('attendance-tracker/<int:plugin_id>/update/', views.AttendanceTrackerUpdateView.as_view(), name='attendance_tracker_update'),
+    path('study-recommendations/<int:plugin_id>/', views.StudyRecommendationsAjaxView.as_view(), name='study_recommendations_ajax'),
 ]

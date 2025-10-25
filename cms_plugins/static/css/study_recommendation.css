@@ -1,0 +1,170 @@
+.study-recommendation-plugin {
+  font-family: "Arial", sans-serif;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.study-recommendation-plugin .section-title {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  text-align: center;
+}
+.study-recommendation-plugin .filters-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.study-recommendation-plugin .filters-container .filter-group {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 200px;
+}
+.study-recommendation-plugin .filters-container .filter-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+}
+.study-recommendation-plugin .filters-container .filter-group .filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #fff;
+  cursor: pointer;
+}
+.study-recommendation-plugin .filters-container .filter-group .filter-select:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+.study-recommendation-plugin .filters-container .reset-filters-btn {
+  align-self: flex-end;
+  padding: 8px 16px;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+.study-recommendation-plugin .filters-container .reset-filters-btn:hover {
+  background-color: #5a6268;
+}
+.study-recommendation-plugin .results-container .loading {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1rem;
+}
+.study-recommendation-plugin .results-container .no-results {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+  font-size: 1.1rem;
+  background-color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+.study-recommendation-plugin .results-container .recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card {
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  transform: translateY(20px);
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card.fade-in {
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body {
+  padding: 20px;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .course-code {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .course-title {
+  font-size: 1.3rem;
+  margin: 10px 0;
+  color: #333;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .course-description {
+  color: #666;
+  line-height: 1.5;
+  margin-bottom: 15px;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .course-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .course-meta span {
+  background-color: #e9ecef;
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: #495057;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .recommendation-score {
+  font-weight: bold;
+  color: #28a745;
+  margin-bottom: 15px;
+  font-size: 1rem;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .card-actions .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+.study-recommendation-plugin .results-container .recommendations-grid .recommendation-card .card-body .card-actions .btn:hover {
+  background-color: #0069d9;
+}
+@media (max-width: 768px) {
+  .study-recommendation-plugin .filters-container {
+    flex-direction: column;
+  }
+  .study-recommendation-plugin .filters-container .filter-group {
+    min-width: 100%;
+  }
+  .study-recommendation-plugin .filters-container .reset-filters-btn {
+    align-self: stretch;
+  }
+  .study-recommendation-plugin .recommendations-grid {
+    grid-template-columns: 1fr;
+  }
+}

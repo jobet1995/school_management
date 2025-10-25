@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 from django.db import models
+from django.db.models import Q
 from cms.models.pluginmodel import CMSPlugin
 
 # Use TYPE_CHECKING to avoid circular imports at runtime
@@ -933,3 +934,189 @@ class PerformanceAnalyticsPlugin(CMSPlugin):
             'activity_trends': activity_trends,
             'time_range': time_range
         }
+
+
+class AttendanceTrackerPlugin(CMSPlugin):
+    """
+    A plugin to track and update student attendance in real time.
+    """
+    title = models.CharField(max_length=200, default="Attendance Tracker")
+    course = models.ForeignKey('Course', on_delete=models.CASCADE, null=True, blank=True, 
+                               help_text="Select a course to track attendance for. If none selected, shows all courses.")
+    date = models.DateField(help_text="Date for which to track attendance")
+    
+    def __str__(self) -> str:
+        return str(self.title)
+    
+    def get_attendance_data(self, search_query=''):
+        """
+        Get attendance data for the specified course and date.
+        If no course is specified, get data for all courses.
+        """
+        
+        # Get enrollments for the course(s)
+        enrollments = Enrollment.objects.filter(is_active=True)
+        
+        if self.course:
+            enrollments = enrollments.filter(course=self.course)
+        
+        # Apply search filter if provided
+        if search_query:
+            # Using union of separate queries to avoid type checking errors with Q objects
+            enrollments = (enrollments.filter(student__first_name__icontains=search_query)
+                         .union(enrollments.filter(student__last_name__icontains=search_query))
+                         .union(enrollments.filter(course__title__icontains=search_query))
+                         .union(enrollments.filter(course__code__icontains=search_query)))
+        
+        # Get existing attendance records for this date
+        enrollment_ids = [e.id for e in enrollments]
+        existing_attendance = Attendance.objects.filter(
+            student__enrollment__in=enrollment_ids,
+            date=self.date
+        )
+        
+        # Create a mapping of student_id_course_id to attendance status
+        attendance_map = {}
+        for record in existing_attendance:
+            key = f"{record.student.id}_{record.course.id}"
+            attendance_map[key] = {
+                'id': record.id,
+                'is_present': record.is_present,
+                'is_excused': record.is_excused
+            }
+        
+        # Build the data structure
+        attendance_data = []
+        for enrollment in enrollments:
+            key = f"{enrollment.student.id}_{enrollment.course.id}"
+            attendance_record = attendance_map.get(key, None)
+            
+            attendance_data.append({
+                'enrollment_id': enrollment.id,
+                'student_id': enrollment.student.id,
+                'student_name': enrollment.student.full_name,
+                'course_id': enrollment.course.id,
+                'course_name': enrollment.course.title,
+                'course_code': enrollment.course.code,
+                'attendance_id': attendance_record['id'] if attendance_record else None,
+                'is_present': attendance_record['is_present'] if attendance_record else True,
+                'is_excused': attendance_record['is_excused'] if attendance_record else False
+            })
+        
+        # Calculate completion percentage
+        total_students = len(attendance_data)
+        marked_present = sum(1 for item in attendance_data if item['is_present'])
+        completion_percentage = (marked_present / total_students * 100) if total_students > 0 else 0
+        
+        return {
+            'attendance_data': attendance_data,
+            'completion_percentage': round(completion_percentage, 1),
+            'total_students': total_students,
+            'marked_present': marked_present
+        }
+
+class StudyRecommendationPlugin(CMSPlugin):
+    """
+    A plugin to recommend study materials or courses based on student grades and interests.
+    """
+    title = models.CharField(max_length=200, default="Recommended Study Materials")
+    
+    # Recommendation settings
+    NUMBER_OF_RECOMMENDATIONS_CHOICES = [
+        (3, '3 Recommendations'),
+        (5, '5 Recommendations'),
+        (10, '10 Recommendations'),
+    ]
+    number_of_recommendations: int = models.PositiveIntegerField(
+        choices=NUMBER_OF_RECOMMENDATIONS_CHOICES, 
+        default=5,
+        help_text="Number of recommendations to display"
+    )  # type: ignore
+    
+    def __str__(self) -> str:
+        return str(self.title)
+    
+    def get_recommendations(self, student=None, difficulty_filter='', subject_filter=''):
+        """
+        Get study material recommendations based on student grades and interests.
+        Uses a weighted scoring algorithm to rank materials.
+        """
+        from .utils import calculate_recommendation_score
+        
+        # Get all courses that are published
+        courses_query = Course.objects.filter(is_published=True)
+        
+        # Apply filters if provided
+        if subject_filter:
+            courses_query = courses_query.filter(category=subject_filter)
+            
+        # Convert queryset to list for processing
+        courses = list(courses_query)
+        
+        # Calculate scores for each course
+        scored_courses = []
+        for course in courses:
+            # Calculate recommendation score
+            score = calculate_recommendation_score(student, course, difficulty_filter)
+            
+            # Only include courses with positive scores
+            if score > 0:
+                scored_courses.append({
+                    'course': course,
+                    'score': score,
+                    'difficulty_level': self._get_difficulty_level(course)
+                })
+        
+        # Sort by score (descending)
+        scored_courses.sort(key=lambda x: x['score'], reverse=True)
+        
+        # Limit to requested number of recommendations
+        recommendations = scored_courses[:self.number_of_recommendations]
+        
+        # Format for JSON response
+        formatted_recommendations = []
+        for item in recommendations:
+            course = item['course']
+            formatted_recommendations.append({
+                'id': course.id,
+                'title': course.title,
+                'code': course.code,
+                'description': course.description,
+                'instructor': course.instructor,
+                'category': course.get_category_display(),
+                'category_key': course.category,
+                'credits': course.credits,
+                'difficulty_level': item['difficulty_level'],
+                'score': round(item['score'], 2),
+                'link': f"/courses/{course.id}/"  # Adjust URL pattern as needed
+            })
+        
+        return formatted_recommendations
+    
+    def _get_difficulty_level(self, course):
+        """
+        Determine difficulty level based on course credits and category.
+        """
+        # Simple heuristic: higher credits = higher difficulty
+        if course.credits >= 4:
+            return "Advanced"
+        elif course.credits >= 3:
+            return "Intermediate"
+        else:
+            return "Beginner"
+    
+    def get_subject_choices(self):
+        """
+        Return available subject categories for filtering.
+        """
+        return Course.COURSE_CATEGORIES
+    
+    def get_difficulty_choices(self):
+        """
+        Return available difficulty levels for filtering.
+        """
+        return [
+            ('Beginner', 'Beginner'),
+            ('Intermediate', 'Intermediate'),
+            ('Advanced', 'Advanced')
+        ]
