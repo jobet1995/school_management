@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.sites",
     # CMS base apps
     "cms",
+    "cms_plugins",
     "menus",
     "djangocms_text",
     "djangocms_link",
@@ -99,6 +100,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "school_management", "templates"),
+            os.path.join(BASE_DIR, "cms_plugins", "templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -222,6 +224,7 @@ DJANGOCMS_VERSIONING_ALLOW_DELETING_VERSIONS = True
 
 STATICFILES_DIRS = [
     BASE_DIR / "school_management" / "static",
+    BASE_DIR / "cms_plugins" / "static",
 ]
 
 INTERNAL_IPS = [

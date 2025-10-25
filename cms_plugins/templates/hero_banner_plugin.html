@@ -1,0 +1,28 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/hero_banner.css' %}">
+
+<div class="hero-banner" 
+     style="width: {{ instance.width }}px; 
+            height: {{ instance.height }}px; 
+            background-color: {{ instance.background_color }};
+            color: {{ instance.text_color }};
+            font-size: {{ instance.font_size }}px;">
+    <div class="hero-background">
+        {% if instance.background_image %}
+            <img src="{{ instance.background_image.url }}" 
+                 alt="{{ instance.title }}">
+        {% endif %}
+    </div>
+    <div class="hero-content">
+        <h1>{{ instance.title }}</h1>
+        {% if instance.subtitle %}
+            <p>{{ instance.subtitle }}</p>
+        {% endif %}
+        {% if instance.cta_text and instance.cta_link %}
+            <a href="{{ instance.cta_link }}" 
+               class="cta-button"
+               style="background-color: {{ instance.text_color }};
+                      color: {{ instance.background_color }};">{{ instance.cta_text }}</a>
+        {% endif %}
+    </div>
+</div>

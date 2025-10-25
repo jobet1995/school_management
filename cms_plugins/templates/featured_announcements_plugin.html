@@ -1,0 +1,14 @@
+<div class="featured-announcements">
+    <h2>{{ instance.title }}</h2>
+    <div class="announcements-list">
+        {% for announcement in announcements %}
+            <div class="announcement-item">
+                <h3>{{ announcement.title }}</h3>
+                <p class="announcement-date">{{ announcement.created_at|date:"F d, Y" }}</p>
+                <p class="announcement-content">{{ announcement.content|truncatewords:30 }}</p>
+            </div>
+        {% empty %}
+            <p>No announcements available.</p>
+        {% endfor %}
+    </div>
+</div>

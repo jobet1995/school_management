@@ -1,0 +1,79 @@
+/* Custom styles for CMS plugins admin interface */
+
+.form-row {
+    margin-bottom: 15px;
+}
+
+.form-row label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form-row .vTextField {
+    width: 100%;
+}
+
+.form-row .field-box {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.field-dimensions .form-row {
+    display: inline-block;
+    width: 48%;
+    margin-right: 2%;
+}
+
+.field-dimensions .form-row:last-child {
+    margin-right: 0;
+}
+
+.field-styling .form-row {
+    display: inline-block;
+    width: 30%;
+    margin-right: 3%;
+}
+
+.field-styling .form-row:last-child {
+    margin-right: 0;
+}
+
+.collapse {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.collapse h2 {
+    background: #f8f8f8;
+    padding: 10px 15px;
+    margin: 0;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.collapse .form-row {
+    padding: 15px;
+    margin: 0;
+}
+
+.collapse.collapsed .form-row {
+    display: none;
+}
+
+.color-picker {
+    width: 60px !important;
+    padding: 2px;
+}
