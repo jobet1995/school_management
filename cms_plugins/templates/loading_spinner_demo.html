@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading Spinner Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/theme/main.css">
+    <link rel="stylesheet" href="../static/css/loading_spinner.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .section {
+            margin-bottom: 2rem;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .section-title {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .demo-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .demo-button:hover {
+            background-color: #0056b3;
+        }
+        
+        .result-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 4px;
+            min-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>Loading Spinner Demo</h1>
+        <p>This page demonstrates the global loading spinner that appears during AJAX requests.</p>
+        
+        <div class="section">
+            <h2 class="section-title">AJAX Request Demo</h2>
+            <p>Click the buttons below to trigger AJAX requests and see the global loading spinner in action.</p>
+            
+            <div class="button-group">
+                <button id="shortRequest" class="demo-button">Short Request (1 second)</button>
+                <button id="longRequest" class="demo-button">Long Request (3 seconds)</button>
+                <button id="errorRequest" class="demo-button">Error Request</button>
+            </div>
+            
+            <div class="result-container" id="result">
+                Results will appear here...
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">How It Works</h2>
+            <p>The global loading spinner automatically appears when any AJAX request starts and disappears when all requests complete.</p>
+            <ul>
+                <li>Uses jQuery's global AJAX event handlers (<code>ajaxStart</code>, <code>ajaxStop</code>, etc.)</li>
+                <li>Tracks multiple concurrent requests</li>
+                <li>Provides visual feedback during loading states</li>
+                <li>Accessible with proper ARIA attributes</li>
+                <li>Responsive design for all screen sizes</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../static/js/loading_spinner.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Short request demo
+            $('#shortRequest').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/posts/1',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#result').html('<strong>Short Request Success:</strong> Loaded post with ID ' + data.id);
+                    },
+                    error: function() {
+                        $('#result').html('<strong>Short Request Error:</strong> Failed to load data');
+                    }
+                });
+            });
+            
+            // Long request demo
+            $('#longRequest').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/posts',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#result').html('<strong>Long Request Success:</strong> Loaded ' + data.length + ' posts');
+                    },
+                    error: function() {
+                        $('#result').html('<strong>Long Request Error:</strong> Failed to load data');
+                    }
+                });
+            });
+            
+            // Error request demo
+            $('#errorRequest').click(function() {
+                $.ajax({
+                    url: 'https://jsonplaceholder.typicode.com/posts/999999',
+                    method: 'GET',
+                    success: function(data) {
+                        $('#result').html('<strong>Error Request Success:</strong> Unexpectedly loaded data');
+                    },
+                    error: function() {
+                        $('#result').html('<strong>Error Request Failed:</strong> Correctly handled 404 error');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

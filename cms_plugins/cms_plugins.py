@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.templatetags.static import static
 from django.contrib import admin
 
-from .models import HeroBannerPlugin, FeaturedAnnouncementsPlugin, UpcomingEventsPlugin, WelcomeSectionPlugin, QuickLinksPlugin, QuickLinkItem, StatisticsCounterPlugin, StatisticsCounterItem, TestimonialPlugin, TestimonialItem, CTABannerPlugin
+from .models import HeroBannerPlugin, FeaturedAnnouncementsPlugin, UpcomingEventsPlugin, WelcomeSectionPlugin, QuickLinksPlugin, QuickLinkItem, StatisticsCounterPlugin, StatisticsCounterItem, TestimonialPlugin, TestimonialItem, CTABannerPlugin, CourseSearchPlugin
 
 
 class QuickLinkItemInline(admin.StackedInline):
@@ -69,8 +69,14 @@ class HeroBannerPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/admin/cms_plugins_admin.css'),)
+            'all': (
+                static('css/admin/cms_plugins_admin.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
+        js = (
+            static('js/loading_spinner.js'),  # Add loading spinner JS
+        )
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
@@ -95,15 +101,19 @@ class FeaturedAnnouncementsPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/featured_announcements.css'),)
+            'all': (
+                static('css/featured_announcements.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/featured_announcements.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
-        context['announcements'] = instance.get_announcements()
+        # We're loading announcements via AJAX, so we don't need to pass them in the context
         context['enable_carousel'] = instance.enable_carousel
         return context
 
@@ -130,19 +140,30 @@ class UpcomingEventsPluginPublisher(CMSPluginBase):
             ),
             'classes': ('collapse',),
         }),
+        (_('Filter Settings'), {
+            'fields': (
+                'show_category_filter',
+                'show_date_filter',
+            ),
+            'classes': ('collapse',),
+        }),
     )
     
     class Media:
         css = {
-            'all': (static('css/upcoming_events.css'),)
+            'all': (
+                static('css/upcoming_events.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/upcoming_events.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
-        context['events'] = instance.get_events()
+        # We're loading events via AJAX, so we don't need to pass them in the context
         context['enable_carousel'] = instance.enable_carousel
         context['auto_rotate'] = instance.auto_rotate
         context['rotation_interval'] = instance.rotation_interval
@@ -169,10 +190,14 @@ class WelcomeSectionPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/welcome_section.css'),)
+            'all': (
+                static('css/welcome_section.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/welcome_section.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):
@@ -190,10 +215,14 @@ class QuickLinksPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/quick_links.css'),)
+            'all': (
+                static('css/quick_links.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/quick_links.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):
@@ -211,10 +240,14 @@ class StatisticsCounterPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/statistics_counter.css'),)
+            'all': (
+                static('css/statistics_counter.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/statistics_counter.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):
@@ -232,10 +265,14 @@ class TestimonialPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/testimonial.css'),)
+            'all': (
+                static('css/testimonial.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/testimonial.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):
@@ -265,10 +302,46 @@ class CTABannerPluginPublisher(CMSPluginBase):
     
     class Media:
         css = {
-            'all': (static('css/cta_banner.css'),)
+            'all': (
+                static('css/cta_banner.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
         }
         js = (
             static('js/cta_banner.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
+        )
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        return context
+
+@plugin_pool.register_plugin
+class CourseSearchPluginPublisher(CMSPluginBase):
+    model = CourseSearchPlugin
+    name = _("Course Search Plugin")
+    render_template = "course_search_plugin.html"
+    cache = False
+    
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+                'placeholder_text',
+            )
+        }),
+    )
+    
+    class Media:
+        css = {
+            'all': (
+                static('css/course_search.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
+        }
+        js = (
+            static('js/course_search.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
         )
 
     def render(self, context, instance, placeholder):

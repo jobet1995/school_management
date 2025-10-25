@@ -4,7 +4,7 @@ from cms.models.pluginmodel import CMSPlugin
 
 # Use TYPE_CHECKING to avoid circular imports at runtime
 if TYPE_CHECKING:
-    from cms_plugins.models import Announcement, QuickLinkItem
+    from cms_plugins.models import Announcement, QuickLinkItem, StatisticsCounterItem
     from django.db.models.manager import Manager
 
 class Announcement(models.Model):
@@ -27,11 +27,20 @@ class Announcement(models.Model):
         return str(self.title)
 
 class Event(models.Model):
+    EVENT_CATEGORIES = [
+        ('academic', 'Academic'),
+        ('sports', 'Sports'),
+        ('cultural', 'Cultural'),
+        ('social', 'Social'),
+        ('administrative', 'Administrative'),
+    ]
+    
     title = models.CharField(max_length=200)
     description = models.TextField()
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     location = models.CharField(max_length=200, blank=True)
+    category = models.CharField(max_length=20, choices=EVENT_CATEGORIES, default='academic')
     is_published: bool = models.BooleanField(default=True)  # type: ignore
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -47,6 +56,37 @@ class Event(models.Model):
     
     def __str__(self) -> str:
         return str(self.title)
+
+class Course(models.Model):
+    COURSE_CATEGORIES = [
+        ('science', 'Science'),
+        ('arts', 'Arts'),
+        ('business', 'Business'),
+        ('technology', 'Technology'),
+    ]
+    
+    title = models.CharField(max_length=200)
+    code = models.CharField(max_length=20, unique=True)
+    description = models.TextField()
+    category = models.CharField(max_length=20, choices=COURSE_CATEGORIES, default='science')
+    instructor = models.CharField(max_length=100)
+    credits: int = models.PositiveIntegerField(default=3)  # type: ignore
+    duration = models.CharField(max_length=50, help_text="e.g., '15 weeks', '8 weeks'")
+    is_published: bool = models.BooleanField(default=True)  # type: ignore
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['title']
+        verbose_name = "Course"
+        verbose_name_plural = "Courses"
+    
+    def __str__(self) -> str:
+        return f"{self.code} - {self.title}"
 
 class HeroBannerPlugin(CMSPlugin):
     title = models.CharField(max_length=200)
@@ -112,35 +152,58 @@ class UpcomingEventsPlugin(CMSPlugin):
     enable_carousel: bool = models.BooleanField(default=True, help_text="Enable carousel view for events")  # type: ignore
     auto_rotate: bool = models.BooleanField(default=True, help_text="Enable automatic rotation of events in carousel")  # type: ignore
     rotation_interval: int = models.PositiveIntegerField(default=5000, help_text="Rotation interval in milliseconds (minimum 1000)")  # type: ignore
+    show_category_filter: bool = models.BooleanField(default=True, help_text="Show category filter dropdown")  # type: ignore
+    show_date_filter: bool = models.BooleanField(default=True, help_text="Show date filter dropdown")  # type: ignore
     
-    def get_events(self):
+    def get_events(self, category='', date_filter=''):
         """
-        Fetches upcoming events from the Event model.
+        Fetches upcoming events from the Event model with optional filtering.
         """
         from cms_plugins.models import Event
         from django.utils import timezone
         
-        if self.show_past_events:
-            # Show all events, ordered by start date (closest first)
-            return Event.objects.filter(
-                is_published=True
-            ).order_by('start_date')[:self.number_of_items]
-        else:
-            # Show only upcoming events (start date >= now)
-            return Event.objects.filter(
-                is_published=True,
-                start_date__gte=timezone.now()
-            ).order_by('start_date')[:self.number_of_items]
+        # Start with base query
+        events_query = Event.objects.filter(is_published=True)
+        
+        # Get current time for date filtering
+        now = timezone.now()
+        
+        # Apply category filter if provided
+        if category:
+            events_query = events_query.filter(category=category)
+        
+        # Apply date filter if provided
+        if date_filter:
+            if date_filter == 'today':
+                events_query = events_query.filter(start_date__date=now.date())
+            elif date_filter == 'this_week':
+                week_start = now - timezone.timedelta(days=now.weekday())
+                week_end = week_start + timezone.timedelta(days=6)
+                events_query = events_query.filter(start_date__date__range=[week_start.date(), week_end.date()])
+            elif date_filter == 'this_month':
+                events_query = events_query.filter(
+                    start_date__year=now.year,
+                    start_date__month=now.month
+                )
+        
+        # Apply past events filter
+        if not self.show_past_events:
+            events_query = events_query.filter(start_date__gte=now)
+        
+        # Apply ordering and limit
+        return events_query.order_by('start_date')[:self.number_of_items]
     
-    def get_events_data(self):
+    def get_events_data(self, category='', date_filter=''):
         """
         Returns events data in a format suitable for AJAX requests.
         """
         from cms_plugins.models import Event
         from django.utils import dateformat
+        from django.utils import timezone
         
-        events = self.get_events()
+        events = self.get_events(category, date_filter)
         data = []
+        now = timezone.now()
         for event in events:
             data.append({
                 'id': event.id,
@@ -149,6 +212,9 @@ class UpcomingEventsPlugin(CMSPlugin):
                 'start_date': dateformat.format(event.start_date, 'F d, Y \a\t g:i A'),
                 'end_date': dateformat.format(event.end_date, 'F d, Y \a\t g:i A') if event.end_date else None,
                 'location': event.location,
+                'category': event.get_category_display(),
+                'category_key': event.category,
+                'is_future': event.start_date >= now,
             })
         return data
     
@@ -223,6 +289,10 @@ class StatisticsCounterPlugin(CMSPlugin):
     A plugin that contains multiple statistics counters.
     """
     
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
     def copy_relations(self, old_instance):
         # Copy the related counter items when copying the plugin
         for counter_item in old_instance.statisticscounteritem_set.all():
@@ -249,6 +319,10 @@ class StatisticsCounterItem(models.Model):
     value: int = models.PositiveIntegerField()  # type: ignore
     icon = models.CharField(max_length=50, blank=True, help_text="Optional icon class (e.g., 'fa fa-users')")
     
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
     class Meta:
         ordering = ['pk']
         verbose_name = "Statistics Counter Item"
@@ -261,6 +335,10 @@ class TestimonialPlugin(CMSPlugin):
     """
     A plugin that contains multiple testimonials.
     """
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
     
     def copy_relations(self, old_instance):
         # Copy the related testimonial items when copying the plugin
@@ -292,6 +370,10 @@ class TestimonialItem(models.Model):
     testimonial = models.TextField()
     is_featured: bool = models.BooleanField(default=False, help_text="Highlight this testimonial")  # type: ignore
     
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
     class Meta:
         ordering = ['pk']
         verbose_name = "Testimonial Item"
@@ -313,3 +395,13 @@ class CTABannerPlugin(CMSPlugin):
     
     def __str__(self) -> str:
         return str(self.heading)
+
+class CourseSearchPlugin(CMSPlugin):
+    """
+    A plugin for course search functionality.
+    """
+    title = models.CharField(max_length=200, default="Course Search")
+    placeholder_text = models.CharField(max_length=200, default="Search courses by title, code, description, or instructor...")
+    
+    def __str__(self) -> str:
+        return str(self.title)

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTA Banner Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/theme/main.css">
+    <link rel="stylesheet" href="../static/css/cta_banner.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .navbar {
+            position: sticky;
+            top: 0;
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        
+        .section {
+            height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .section h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section p {
+            max-width: 600px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        
+        #section1 { background-color: #f8f9fa; }
+        #section2 { background-color: #e9ecef; }
+        #section3 { background-color: #dee2e6; }
+        #section4 { background-color: #ced4da; }
+    </style>
+</head>
+<body>
+    <!-- Sticky navbar -->
+    <nav class="navbar">
+        <h1>Sticky Navigation</h1>
+    </nav>
+    
+    <!-- CTA Banner -->
+    <div class="cta-banner" style="background-color: #007bff;">
+        <div class="cta-banner-content">
+            <h2 class="cta-heading">Call to Action Banner</h2>
+            <p class="cta-subheading">Click the buttons below to smoothly scroll to different sections</p>
+            <a href="#section1" class="cta-button">Go to Section 1</a>
+            <a href="#section2" class="cta-button">Go to Section 2</a>
+            <a href="#section3" class="cta-button">Go to Section 3</a>
+            <a href="#section4" class="cta-button">Go to Section 4</a>
+        </div>
+    </div>
+    
+    <!-- Sections -->
+    <section id="section1" class="section">
+        <h2>Section 1</h2>
+        <p>This is the first section. The CTA button should smoothly scroll to this section with an offset to account for the sticky navbar.</p>
+    </section>
+    
+    <section id="section2" class="section">
+        <h2>Section 2</h2>
+        <p>This is the second section. Notice how the scroll duration is based on the distance traveled.</p>
+    </section>
+    
+    <section id="section3" class="section">
+        <h2>Section 3</h2>
+        <p>This is the third section. The CTA buttons also have a hover effect with a scale-up animation.</p>
+    </section>
+    
+    <section id="section4" class="section">
+        <h2>Section 4</h2>
+        <p>This is the fourth section. All functionality is implemented with jQuery and CSS transitions.</p>
+    </section>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="../static/js/cta_banner.js"></script>
+    <script>
+        // Initialize fade-in animation for CTA banner
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctaBanner = document.querySelector('.cta-banner');
+            if (ctaBanner) {
+                setTimeout(() => {
+                    ctaBanner.classList.add('fade-in');
+                }, 300);
+            }
+        });
+    </script>
+</body>
+</html>

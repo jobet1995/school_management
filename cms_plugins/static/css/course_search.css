@@ -1,0 +1,102 @@
+.course-search-plugin {
+    padding: 2rem 0;
+}
+
+.course-search-plugin .search-container {
+    margin-bottom: 2rem;
+}
+
+.course-search-plugin .search-input {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 0.5rem;
+    transition: border-color 0.3s ease;
+}
+
+.course-search-plugin .search-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+}
+
+.course-search-plugin .results-container {
+    min-height: 200px;
+}
+
+.course-search-plugin .loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.course-search-plugin .no-results {
+    text-align: center;
+    padding: 2rem;
+    color: #6b7280;
+}
+
+.course-search-plugin .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.course-search-plugin .course-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: white;
+}
+
+.course-search-plugin .course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.course-search-plugin .course-body {
+    padding: 1.5rem;
+}
+
+.course-search-plugin .course-code {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: #dbeafe;
+    color: #1d4ed8;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.course-search-plugin .course-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: #1f2937;
+}
+
+.course-search-plugin .course-description {
+    color: #6b7280;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.course-search-plugin .course-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.course-search-plugin .fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.course-search-plugin .fade-in.show {
+    opacity: 1;
+    transform: translateY(0);
+}

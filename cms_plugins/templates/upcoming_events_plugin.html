@@ -3,39 +3,46 @@
 
 <div class="upcoming-events" 
      data-plugin-id="{{ instance.id }}"
-     data-auto-rotate="{{ auto_rotate|yesno:'true,false' }}"
-     data-rotation-interval="{{ rotation_interval }}">
+     data-auto-rotate="{{ instance.auto_rotate|yesno:'true,false' }}"
+     data-rotation-interval="{{ instance.rotation_interval }}"
+     data-show-category-filter="{{ instance.show_category_filter|yesno:'true,false' }}"
+     data-show-date-filter="{{ instance.show_date_filter|yesno:'true,false' }}">
     <h2>{{ instance.title }}</h2>
-    <div class="events-container {% if enable_carousel %}carousel-enabled{% endif %}">
-        {% if enable_carousel %}
+    
+    <!-- Filter controls -->
+    <div class="events-filters">
+        {% if instance.show_category_filter %}
+            <select class="filter-category" aria-label="Filter by category">
+                <option value="">All Categories</option>
+                <option value="academic">Academic</option>
+                <option value="sports">Sports</option>
+                <option value="cultural">Cultural</option>
+                <option value="social">Social</option>
+                <option value="administrative">Administrative</option>
+            </select>
+        {% endif %}
+        
+        {% if instance.show_date_filter %}
+            <select class="filter-date" aria-label="Filter by date">
+                <option value="">All Dates</option>
+                <option value="today">Today</option>
+                <option value="this_week">This Week</option>
+                <option value="this_month">This Month</option>
+            </select>
+        {% endif %}
+        
+        <button class="filter-reset" aria-label="Reset filters">Reset</button>
+    </div>
+    
+    <div class="events-container {% if instance.enable_carousel %}carousel-enabled{% endif %}">
+        {% if instance.enable_carousel %}
             <button class="carousel-nav carousel-prev" aria-label="Previous event">&#8249;</button>
         {% endif %}
-        <div class="events-list {% if enable_carousel %}carousel{% endif %}">
-            {% for event in events %}
-                <div class="event-item" data-event-id="{{ event.id }}" data-event-start="{{ event.start_date|date:'c' }}">
-                    <h3>{{ event.title }}</h3>
-                    <p class="event-dates">
-                        <span class="start-date">{{ event.start_date|date:"F d, Y \a\t g:i A" }}</span>
-                        {% if event.end_date %}
-                            - <span class="end-date">{{ event.end_date|date:"F d, Y \a\t g:i A" }}</span>
-                        {% endif %}
-                    </p>
-                    {% if event.location %}
-                        <p class="event-location">{{ event.location }}</p>
-                    {% endif %}
-                    <p class="event-description">{{ event.description|truncatewords:30 }}</p>
-                    <div class="countdown-timer" data-event-id="{{ event.id }}">
-                        <span class="countdown-days">00</span>d 
-                        <span class="countdown-hours">00</span>h 
-                        <span class="countdown-minutes">00</span>m 
-                        <span class="countdown-seconds">00</span>s
-                    </div>
-                </div>
-            {% empty %}
-                <p>No events available.</p>
-            {% endfor %}
+        <div class="events-list {% if instance.enable_carousel %}carousel{% endif %}">
+            <!-- Events will be loaded via AJAX -->
+            <div class="loading">Loading events...</div>
         </div>
-        {% if enable_carousel %}
+        {% if instance.enable_carousel %}
             <button class="carousel-nav carousel-next" aria-label="Next event">&#8250;</button>
         {% endif %}
     </div>

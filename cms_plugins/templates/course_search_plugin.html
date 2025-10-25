@@ -1,0 +1,104 @@
+{% load static %}
+<div class="course-search-plugin">
+    <h2 class="section-title">{{ instance.title }}</h2>
+    
+    <div class="search-container">
+        <input type="text" id="courseSearchInput-{{ instance.id }}" class="search-input" placeholder="{{ instance.placeholder_text }}">
+    </div>
+    
+    <div class="results-container" id="searchResults-{{ instance.id }}">
+        <div class="no-results">Enter a search term to find courses</div>
+    </div>
+</div>
+
+<script>
+(function($) {
+    $(document).ready(function() {
+        let searchTimeout;
+        const pluginId = '{{ instance.id }}';
+        const $searchInput = $('#courseSearchInput-' + pluginId);
+        const $searchResults = $('#searchResults-' + pluginId);
+        
+        // Debounce function to limit AJAX requests
+        $searchInput.on('input', function() {
+            const query = $(this).val().trim();
+            
+            // Clear previous timeout
+            clearTimeout(searchTimeout);
+            
+            // Show loading state
+            if (query.length > 0) {
+                $searchResults.html('<div class="loading">Searching...</div>');
+            } else {
+                $searchResults.html('<div class="no-results">Enter a search term to find courses</div>');
+                return;
+            }
+            
+            // Set new timeout
+            searchTimeout = setTimeout(function() {
+                performSearch(query, pluginId);
+            }, 300); // 300ms debounce delay
+        });
+        
+        // Perform the actual search
+        function performSearch(query, pluginId) {
+            $.ajax({
+                url: '{% url "cms_plugins:course_search_ajax" %}',
+                method: 'GET',
+                data: {
+                    'q': query
+                },
+                dataType: 'json',
+                success: function(response) {
+                    if (response.success) {
+                        displayResults(response.courses, pluginId);
+                    } else {
+                        $('#searchResults-' + pluginId).html('<div class="no-results">Error occurred while searching. Please try again.</div>');
+                    }
+                },
+                error: function() {
+                    $('#searchResults-' + pluginId).html('<div class="no-results">Error occurred while searching. Please try again.</div>');
+                }
+            });
+        }
+        
+        // Display search results
+        function displayResults(courses, pluginId) {
+            const $searchResults = $('#searchResults-' + pluginId);
+            
+            if (courses.length === 0) {
+                $searchResults.html('<div class="no-results">No courses found matching your search criteria.</div>');
+                return;
+            }
+            
+            let html = '<div class="courses-grid">';
+            
+            courses.forEach(function(course, index) {
+                html += `
+                    <div class="course-card fade-in" style="transition-delay: ${index * 0.1}s">
+                        <div class="course-body">
+                            <span class="course-code">${course.code}</span>
+                            <h3 class="course-title">${course.title}</h3>
+                            <p class="course-description">${course.description.substring(0, 150)}${course.description.length > 150 ? '...' : ''}</p>
+                            <div class="course-meta">
+                                <span>Instructor: ${course.instructor}</span>
+                                <span>Credits: ${course.credits}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            $searchResults.html(html);
+            
+            // Trigger fade-in animation
+            setTimeout(function() {
+                $('#searchResults-' + pluginId + ' .course-card').each(function(index) {
+                    $(this).addClass('show');
+                });
+            }, 50);
+        }
+    });
+})(django.jQuery);
+</script>

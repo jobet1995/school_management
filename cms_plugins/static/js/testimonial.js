@@ -28,19 +28,22 @@ function initializeTestimonialCarousel(container) {
     container.appendChild(nextBtn);
     
     let currentIndex = 0;
+    let rotationInterval;
+    const rotationDelay = 5000; // 5 seconds
     
     // Set initial state
     updateCarousel(slider, items, currentIndex);
     
+    // Start automatic rotation
+    startRotation();
+    
     // Event listeners for navigation
     prevBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-        updateCarousel(slider, items, currentIndex);
+        goToPrev();
     });
     
     nextBtn.addEventListener('click', () => {
-        currentIndex = (currentIndex + 1) % totalItems;
-        updateCarousel(slider, items, currentIndex);
+        goToNext();
     });
     
     // Touch/swipe support
@@ -48,12 +51,23 @@ function initializeTestimonialCarousel(container) {
     let endX = 0;
     
     slider.addEventListener('touchstart', (e) => {
+        pauseRotation();
         startX = e.touches[0].clientX;
     });
     
     slider.addEventListener('touchend', (e) => {
         endX = e.changedTouches[0].clientX;
         handleSwipe(startX, endX);
+        startRotation();
+    });
+    
+    // Pause rotation on hover
+    container.addEventListener('mouseenter', () => {
+        pauseRotation();
+    });
+    
+    container.addEventListener('mouseleave', () => {
+        startRotation();
     });
     
     function handleSwipe(start, end) {
@@ -63,12 +77,40 @@ function initializeTestimonialCarousel(container) {
         if (Math.abs(diff) > threshold) {
             if (diff > 0) {
                 // Swipe left - next
-                currentIndex = (currentIndex + 1) % totalItems;
+                goToNext();
             } else {
                 // Swipe right - previous
-                currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+                goToPrev();
             }
-            updateCarousel(slider, items, currentIndex);
+        }
+    }
+    
+    function goToPrev() {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        updateCarousel(slider, items, currentIndex);
+    }
+    
+    function goToNext() {
+        currentIndex = (currentIndex + 1) % totalItems;
+        updateCarousel(slider, items, currentIndex);
+    }
+    
+    function startRotation() {
+        // Clear any existing interval
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+        }
+        
+        // Start new interval
+        rotationInterval = setInterval(() => {
+            goToNext();
+        }, rotationDelay);
+    }
+    
+    function pauseRotation() {
+        if (rotationInterval) {
+            clearInterval(rotationInterval);
+            rotationInterval = null;
         }
     }
     
@@ -90,17 +132,14 @@ function initializeTestimonialCarousel(container) {
 }
 
 function updateCarousel(slider, items, index) {
-    // Hide all items
+    // Hide all items with fade-out effect
     items.forEach(item => {
-        item.style.display = 'none';
+        item.style.opacity = '0';
+        item.style.transition = 'opacity 0.5s ease';
     });
     
-    // Show current item
-    items[index].style.display = 'block';
-    
-    // Add animation class
-    items[index].classList.add('carousel-animate');
+    // Show current item with fade-in effect
     setTimeout(() => {
-        items[index].classList.remove('carousel-animate');
+        items[index].style.opacity = '1';
     }, 300);
 }

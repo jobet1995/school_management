@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/theme/main.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .course-search-section {
+            padding: 2rem 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        .search-container {
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.5rem;
+            transition: border-color 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+        
+        .results-container {
+            min-height: 200px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            color: #6b7280;
+        }
+        
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .course-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background: white;
+        }
+        
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .course-body {
+            padding: 1.5rem;
+        }
+        
+        .course-code {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background-color: #dbeafe;
+            color: #1d4ed8;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+        
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #1f2937;
+        }
+        
+        .course-description {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <section class="course-search-section">
+        <div class="container">
+            <h2 class="section-title">Course Search</h2>
+            
+            <div class="search-container">
+                <input type="text" id="courseSearchInput" class="search-input" placeholder="Search courses by title, code, description, or instructor...">
+            </div>
+            
+            <div class="results-container" id="searchResults">
+                <div class="no-results">Enter a search term to find courses</div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let searchTimeout;
+            
+            // Debounce function to limit AJAX requests
+            $('#courseSearchInput').on('input', function() {
+                const query = $(this).val().trim();
+                
+                // Clear previous timeout
+                clearTimeout(searchTimeout);
+                
+                // Show loading state
+                if (query.length > 0) {
+                    $('#searchResults').html('<div class="loading">Searching...</div>');
+                } else {
+                    $('#searchResults').html('<div class="no-results">Enter a search term to find courses</div>');
+                    return;
+                }
+                
+                // Set new timeout
+                searchTimeout = setTimeout(function() {
+                    performSearch(query);
+                }, 300); // 300ms debounce delay
+            });
+            
+            // Perform the actual search
+            function performSearch(query) {
+                $.ajax({
+                    url: '/cms_plugins/course-search/',
+                    method: 'GET',
+                    data: {
+                        'q': query
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            displayResults(response.courses);
+                        } else {
+                            $('#searchResults').html('<div class="no-results">Error occurred while searching. Please try again.</div>');
+                        }
+                    },
+                    error: function() {
+                        $('#searchResults').html('<div class="no-results">Error occurred while searching. Please try again.</div>');
+                    }
+                });
+            }
+            
+            // Display search results
+            function displayResults(courses) {
+                if (courses.length === 0) {
+                    $('#searchResults').html('<div class="no-results">No courses found matching your search criteria.</div>');
+                    return;
+                }
+                
+                let html = '<div class="courses-grid">';
+                
+                courses.forEach(function(course, index) {
+                    html += `
+                        <div class="course-card fade-in" style="transition-delay: ${index * 0.1}s">
+                            <div class="course-body">
+                                <span class="course-code">${course.code}</span>
+                                <h3 class="course-title">${course.title}</h3>
+                                <p class="course-description">${course.description.substring(0, 150)}${course.description.length > 150 ? '...' : ''}</p>
+                                <div class="course-meta">
+                                    <span>Instructor: ${course.instructor}</span>
+                                    <span>Credits: ${course.credits}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                $('#searchResults').html(html);
+                
+                // Trigger fade-in animation
+                setTimeout(function() {
+                    $('.course-card').each(function(index) {
+                        $(this).addClass('show');
+                    });
+                }, 50);
+            }
+        });
+    </script>
+</body>
+</html>

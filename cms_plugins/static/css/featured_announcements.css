@@ -71,6 +71,8 @@
 .announcement-content {
     line-height: 1.6;
     margin-bottom: 10px;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
 }
 
 .read-more-btn {

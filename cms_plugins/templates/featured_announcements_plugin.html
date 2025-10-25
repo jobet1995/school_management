@@ -8,20 +8,8 @@
             <button class="carousel-nav carousel-prev" aria-label="Previous announcement">&#8249;</button>
         {% endif %}
         <div class="announcements-list {% if enable_carousel %}carousel{% endif %}">
-            {% for announcement in announcements %}
-                <div class="announcement-item {% if forloop.first %}featured{% endif %}" data-announcement-id="{{ announcement.id }}">
-                    <h3>{{ announcement.title }}</h3>
-                    <p class="announcement-date">{{ announcement.created_at|date:"F d, Y" }}</p>
-                    <div class="announcement-content-wrapper">
-                        <p class="announcement-content">{{ announcement.content }}</p>
-                        {% if announcement.content|length > 200 %}
-                            <button class="read-more-btn">Read more</button>
-                        {% endif %}
-                    </div>
-                </div>
-            {% empty %}
-                <p>No announcements available.</p>
-            {% endfor %}
+            <!-- Announcements will be loaded via AJAX -->
+            <div class="loading">Loading announcements...</div>
         </div>
         {% if enable_carousel %}
             <button class="carousel-nav carousel-next" aria-label="Next announcement">&#8250;</button>
