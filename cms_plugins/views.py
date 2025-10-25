@@ -6,6 +6,7 @@ from django.utils import timezone
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 
 from .models import (
     Announcement, 
@@ -14,10 +15,143 @@ from .models import (
     FeaturedAnnouncementsPlugin, 
     UpcomingEventsPlugin,
     StatisticsCounterPlugin,
-    StatisticsCounterItem
+    StatisticsCounterItem,
+    StudentDashboardPlugin,
+    LiveNotification,
+    LiveNotificationsPlugin,
+    PerformanceAnalyticsPlugin
 )
 
 # Create your views here.
+
+class PerformanceAnalyticsAjaxView(View):
+    """
+    AJAX view to fetch performance analytics data
+    """
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    def get(self, request, plugin_id):
+        """
+        Return performance analytics data for a specific plugin instance
+        """
+        try:
+            # Get the plugin instance
+            plugin = get_object_or_404(PerformanceAnalyticsPlugin, id=plugin_id)
+            
+            # Get time range from query parameters
+            time_range = request.GET.get('time_range', plugin.default_time_range)
+            
+            # Get chart data for the current user
+            chart_data = plugin.get_chart_data(request.user, time_range)
+            
+            # Return JSON response
+            return JsonResponse({
+                'success': True,
+                'data': chart_data
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+class LiveNotificationsAjaxView(View):
+    """
+    AJAX view to fetch live notifications data
+    """
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    def get(self, request, plugin_id):
+        """
+        Return notifications data for a specific plugin instance
+        """
+        try:
+            # Get the plugin instance
+            plugin = get_object_or_404(LiveNotificationsPlugin, id=plugin_id)
+            
+            # Get notifications for the current user
+            notifications = plugin.get_notifications(request.user)
+            unread_count = plugin.get_unread_count(request.user)
+            
+            # Return JSON response
+            return JsonResponse({
+                'success': True,
+                'notifications': notifications,
+                'unread_count': unread_count
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+class MarkNotificationAsReadView(View):
+    """
+    AJAX view to mark a notification as read
+    """
+    
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+    
+    def post(self, request, notification_id):
+        """
+        Mark a specific notification as read
+        """
+        try:
+            # Get the notification
+            notification = get_object_or_404(LiveNotification, id=notification_id, user=request.user)
+            
+            # Mark as read
+            notification.mark_as_read()
+            
+            # Return JSON response
+            return JsonResponse({
+                'success': True,
+                'message': 'Notification marked as read'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
+
+class StudentDashboardAjaxView(View):
+    """
+    AJAX view to fetch student dashboard data
+    """
+    
+    def get(self, request, plugin_id):
+        """
+        Return student dashboard data for a specific plugin instance
+        """
+        try:
+            # Get the plugin instance
+            plugin = get_object_or_404(StudentDashboardPlugin, id=plugin_id)
+            
+            # Get student ID from session or request (simplified for demo)
+            # In a real implementation, you would get this from the authenticated user
+            student_id = request.GET.get('student_id', None)
+            
+            # Get student data
+            student_data = plugin.get_student_data(student_id)
+            
+            # Return JSON response
+            return JsonResponse({
+                'success': True,
+                'data': student_data
+            })
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': str(e)
+            }, status=500)
 
 class FeaturedAnnouncementsAjaxView(View):
     """

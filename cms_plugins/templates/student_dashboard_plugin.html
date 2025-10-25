@@ -1,0 +1,89 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/student_dashboard.css' %}">
+
+<div class="student-dashboard" data-plugin-id="{{ instance.id }}">
+    <div class="dashboard-header">
+        <h2>{{ instance.title }}</h2>
+        <button class="refresh-btn" aria-label="Refresh dashboard">
+            <span class="refresh-icon">↻</span>
+        </button>
+    </div>
+    
+    <div class="dashboard-content">
+        <!-- Student Info Card -->
+        <div class="dashboard-card student-info">
+            <h3>Student Information</h3>
+            <div class="student-details">
+                {% if student_data.student.name %}
+                    <p><strong>Name:</strong> {{ student_data.student.name }}</p>
+                    <p><strong>Student ID:</strong> {{ student_data.student.student_id }}</p>
+                    <p><strong>Email:</strong> {{ student_data.student.email }}</p>
+                {% else %}
+                    <p>Please log in to view your dashboard.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Attendance Card -->
+        <div class="dashboard-card attendance-summary">
+            <h3>Overall Attendance</h3>
+            <div class="attendance-percentage">
+                <span class="percentage">{{ student_data.attendance_percentage }}%</span>
+                <div class="attendance-bar" data-percentage="{{ student_data.attendance_percentage }}">
+                    <div class="attendance-fill"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Enrolled Courses Section -->
+        <div class="dashboard-section">
+            <h3>Enrolled Courses</h3>
+            <div class="courses-grid">
+                {% for course in student_data.enrolled_courses %}
+                <div class="dashboard-card course-card" data-course-id="{{ course.id }}">
+                    <h4>{{ course.code }} - {{ course.title }}</h4>
+                    <p class="instructor">Instructor: {{ course.instructor }}</p>
+                    <div class="progress-container" data-progress="{{ course.progress }}">
+                        <span>Progress: {{ course.progress }}%</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="attendance-container" data-attendance="{{ course.attendance }}">
+                        <span>Attendance: {{ course.attendance }}%</span>
+                        <div class="attendance-bar">
+                            <div class="attendance-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>No courses enrolled.</p>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Recent Grades Section -->
+        <div class="dashboard-section">
+            <h3>Recent Grades</h3>
+            <div class="grades-list">
+                {% for grade in student_data.recent_grades %}
+                <div class="dashboard-card grade-item">
+                    <div class="grade-header">
+                        <h4>{{ grade.course_code }} - {{ grade.course }}</h4>
+                        <span class="grade-badge grade-{{ grade.grade }}">{{ grade.grade }}</span>
+                    </div>
+                    <p class="grade-date">Recorded: {{ grade.date }}</p>
+                </div>
+                {% empty %}
+                <p>No grades available.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Loading spinner -->
+    <div class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Refreshing dashboard...</p>
+    </div>
+</div>

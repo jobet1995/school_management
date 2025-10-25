@@ -19,7 +19,10 @@ from .models import (
     CourseSearchPlugin,
     NavbarPlugin,
     NavbarItem,
-    NavbarItemChild
+    NavbarItemChild,
+    StudentDashboardPlugin,
+    LiveNotificationsPlugin,
+    PerformanceAnalyticsPlugin  # Add our new plugin model
 )
 
 
@@ -389,4 +392,118 @@ class CourseSearchPluginPublisher(CMSPluginBase):
 
     def render(self, context, instance, placeholder):
         context = super().render(context, instance, placeholder)
+        return context
+
+@plugin_pool.register_plugin
+class StudentDashboardPluginPublisher(CMSPluginBase):
+    model = StudentDashboardPlugin
+    name = _("Student Dashboard Plugin")
+    render_template = "student_dashboard_plugin.html"
+    cache = False
+    
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+            )
+        }),
+    )
+    
+    class Media:
+        css = {
+            'all': (
+                static('css/student_dashboard.css'),
+                static('css/loading_spinner.css'),  # Add loading spinner CSS
+            )
+        }
+        js = (
+            static('js/student_dashboard.js'),
+            static('js/loading_spinner.js'),  # Add loading spinner JS
+        )
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        # Get student data (in a real implementation, you would get the student ID from the session)
+        student_data = instance.get_student_data()
+        context['student_data'] = student_data
+        return context
+
+@plugin_pool.register_plugin
+class LiveNotificationsPluginPublisher(CMSPluginBase):
+    model = LiveNotificationsPlugin
+    name = _("Live Notifications Plugin")
+    render_template = "live_notifications_plugin.html"
+    cache = False
+    
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+            )
+        }),
+    )
+    
+    class Media:
+        css = {
+            'all': (
+                static('css/live_notifications.css'),
+            )
+        }
+        js = (
+            static('js/live_notifications.js'),
+        )
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        # Get the current user from the request
+        request = context['request']
+        user = request.user
+        
+        # Get unread count and notifications
+        unread_count = instance.get_unread_count(user)
+        notifications = instance.get_notifications(user)
+        
+        context['unread_count'] = unread_count
+        context['notifications'] = notifications
+        context['user'] = user
+        return context
+
+@plugin_pool.register_plugin
+class PerformanceAnalyticsPluginPublisher(CMSPluginBase):
+    model = PerformanceAnalyticsPlugin
+    name = _("Performance Analytics Plugin")
+    render_template = "performance_analytics_plugin.html"
+    cache = False
+    
+    fieldsets = (
+        (None, {
+            'fields': (
+                'title',
+                'default_time_range',
+            )
+        }),
+    )
+    
+    class Media:
+        css = {
+            'all': (
+                static('css/performance_analytics.css'),
+            )
+        }
+        js = (
+            static('js/chart.min.js'),  # Chart.js library
+            static('js/performance_analytics.js'),
+        )
+
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        # Get the current user from the request
+        request = context['request']
+        user = request.user
+        
+        # Get chart data
+        chart_data = instance.get_chart_data(user)
+        
+        context['chart_data'] = chart_data
+        context['default_time_range'] = instance.default_time_range
         return context

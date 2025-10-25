@@ -1,0 +1,400 @@
+.student-dashboard {
+  padding: 2rem;
+  background-color: #FFFFFF;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.student-dashboard .dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+.student-dashboard .dashboard-header h2 {
+  font-family: "Poppins", sans-serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #111827;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .student-dashboard .dashboard-header h2 {
+    font-size: 1.875rem;
+  }
+}
+@media (max-width: 767px) {
+  .student-dashboard .dashboard-header h2 {
+    font-size: 1.5rem;
+  }
+}
+.student-dashboard .dashboard-header h2 {
+  margin: 0;
+  color: #1E3A8A;
+}
+.student-dashboard .dashboard-header .refresh-btn {
+  display: inline-block;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+.student-dashboard .dashboard-header .refresh-btn:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.25);
+}
+.student-dashboard .dashboard-header .refresh-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+.student-dashboard .dashboard-header .refresh-btn {
+  background-color: #F59E0B;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.student-dashboard .dashboard-header .refresh-btn:hover {
+  background-color: #1E3A8A;
+  transform: rotate(90deg);
+}
+.student-dashboard .dashboard-header .refresh-btn .refresh-icon {
+  font-size: 1.5rem;
+}
+.student-dashboard .dashboard-content .dashboard-card {
+  background-color: #FFFFFF;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+.student-dashboard .dashboard-content .dashboard-card:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+.student-dashboard .dashboard-content .dashboard-card h3 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #111827;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .student-dashboard .dashboard-content .dashboard-card h3 {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 767px) {
+  .student-dashboard .dashboard-content .dashboard-card h3 {
+    font-size: 1.25rem;
+  }
+}
+.student-dashboard .dashboard-content .dashboard-card h3 {
+  margin-top: 0;
+  color: #1E3A8A;
+  border-bottom: 1px solid #D1D5DB;
+  padding-bottom: 0.5rem;
+}
+.student-dashboard .dashboard-content .dashboard-card h4 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #111827;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .student-dashboard .dashboard-content .dashboard-card h4 {
+    font-size: 1.25rem;
+  }
+}
+@media (max-width: 767px) {
+  .student-dashboard .dashboard-content .dashboard-card h4 {
+    font-size: 1.125rem;
+  }
+}
+.student-dashboard .dashboard-content .dashboard-card h4 {
+  margin-top: 0;
+  color: #111827;
+}
+.student-dashboard .dashboard-content .student-info .student-details p {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #111827;
+  margin: 0.5rem 0;
+}
+.student-dashboard .dashboard-content .student-info .student-details p strong {
+  color: #1E3A8A;
+}
+.student-dashboard .dashboard-content .attendance-summary .attendance-percentage {
+  text-align: center;
+}
+.student-dashboard .dashboard-content .attendance-summary .attendance-percentage .percentage {
+  font-family: "Poppins", sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #111827;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .student-dashboard .dashboard-content .attendance-summary .attendance-percentage .percentage {
+    font-size: 2.25rem;
+  }
+}
+@media (max-width: 767px) {
+  .student-dashboard .dashboard-content .attendance-summary .attendance-percentage .percentage {
+    font-size: 1.875rem;
+  }
+}
+.student-dashboard .dashboard-content .attendance-summary .attendance-percentage .percentage {
+  color: #1E3A8A;
+  display: block;
+  margin-bottom: 1rem;
+}
+.student-dashboard .dashboard-content .attendance-summary .attendance-percentage .attendance-bar {
+  height: 20px;
+  background-color: #F3F4F6;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+.student-dashboard .dashboard-content .attendance-summary .attendance-percentage .attendance-bar .attendance-fill {
+  height: 100%;
+  background-color: #10B981;
+  border-radius: 9999px;
+  width: 0;
+  transition: width 1s ease-in-out;
+}
+.student-dashboard .dashboard-content .dashboard-section {
+  margin-bottom: 2rem;
+}
+.student-dashboard .dashboard-content .dashboard-section h3 {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #111827;
+}
+@media (min-width: 768px) and (max-width: 1023px) {
+  .student-dashboard .dashboard-content .dashboard-section h3 {
+    font-size: 1.5rem;
+  }
+}
+@media (max-width: 767px) {
+  .student-dashboard .dashboard-content .dashboard-section h3 {
+    font-size: 1.25rem;
+  }
+}
+.student-dashboard .dashboard-content .dashboard-section h3 {
+  color: #1E3A8A;
+  margin-bottom: 1rem;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .instructor {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #111827;
+  color: #6B7280;
+  margin: 0.5rem 0;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container {
+  margin: 1rem 0;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container span,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container span {
+  font-family: "Roboto", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #6B7280;
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #111827;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .progress-bar,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .attendance-bar,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .progress-bar,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .attendance-bar {
+  height: 10px;
+  background-color: #F3F4F6;
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .progress-bar .progress-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .progress-bar .attendance-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .attendance-bar .progress-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .attendance-bar .attendance-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .progress-bar .progress-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .progress-bar .attendance-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .attendance-bar .progress-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .attendance-bar .attendance-fill {
+  height: 100%;
+  border-radius: 9999px;
+  width: 0;
+  transition: width 1s ease-in-out;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .progress-bar .progress-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .progress-bar .progress-fill {
+  background-color: #F59E0B;
+}
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .progress-container .attendance-bar .attendance-fill,
+.student-dashboard .dashboard-content .dashboard-section .courses-grid .course-card .attendance-container .attendance-bar .attendance-fill {
+  background-color: #10B981;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item {
+  margin-bottom: 1rem;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header h4 {
+  margin: 0;
+  flex: 1;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge {
+  display: inline-block;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.25);
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-A, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-A-plus, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-A-minus {
+  background-color: #10B981;
+  color: #FFFFFF;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-B, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-B-plus, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-B-minus {
+  background-color: #F59E0B;
+  color: #FFFFFF;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-C, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-C-plus, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-C-minus {
+  background-color: #FBBF24;
+  color: #FFFFFF;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-D, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-D-plus, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-D-minus, .student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-header .grade-badge.grade-F {
+  background-color: #EF4444;
+  color: #FFFFFF;
+}
+.student-dashboard .dashboard-content .dashboard-section .grades-list .grade-item .grade-date {
+  font-family: "Roboto", sans-serif;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #6B7280;
+  color: #6B7280;
+  margin: 0;
+}
+.student-dashboard .loading-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  z-index: 10;
+}
+.student-dashboard .loading-spinner .spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #F3F4F6;
+  border-top: 5px solid #1E3A8A;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+.student-dashboard .loading-spinner p {
+  font-family: "Roboto", sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #111827;
+  color: #1E3A8A;
+  font-weight: 600;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .student-dashboard {
+    padding: 1.5rem;
+  }
+  .student-dashboard .dashboard-content .dashboard-section .courses-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+}
+@media (max-width: 768px) {
+  .student-dashboard {
+    padding: 1rem;
+  }
+  .student-dashboard .dashboard-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .student-dashboard .dashboard-header .refresh-btn {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+  }
+  .student-dashboard .dashboard-content .dashboard-section .courses-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,37 @@
+{% load static %}
+<div class="performance-analytics" data-plugin-id="{{ instance.id }}">
+    <div class="analytics-header">
+        <h2>{{ instance.title }}</h2>
+        <div class="time-range-filter">
+            <label for="time-range">Time Range:</label>
+            <select id="time-range" class="time-range-select">
+                <option value="week" {% if default_time_range == 'week' %}selected{% endif %}>Weekly</option>
+                <option value="month" {% if default_time_range == 'month' %}selected{% endif %}>Monthly</option>
+                <option value="semester" {% if default_time_range == 'semester' %}selected{% endif %}>Semester</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="analytics-content">
+        <div class="chart-container">
+            <canvas id="academicPerformanceChart" class="chart-canvas" width="400" height="200"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="attendanceRateChart" class="chart-canvas" width="400" height="200"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="activityTrendsChart" class="chart-canvas" width="400" height="200"></canvas>
+        </div>
+    </div>
+    
+    <div class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Loading analytics data...</p>
+    </div>
+    
+    <div class="error-message" style="display: none;">
+        <p>Failed to load analytics data. Please try again later.</p>
+    </div>
+</div>

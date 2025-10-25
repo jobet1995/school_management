@@ -1,0 +1,46 @@
+{% load static %}
+<div class="live-notifications" data-plugin-id="{{ instance.id }}" data-user-id="{{ user.id }}">
+    <div class="notifications-dropdown">
+        <button class="notifications-toggle" aria-label="Notifications" aria-expanded="false">
+            <span class="bell-icon">🔔</span>
+            {% if unread_count > 0 %}
+                <span class="unread-count">{{ unread_count }}</span>
+            {% endif %}
+        </button>
+        
+        <div class="notifications-panel" aria-hidden="true">
+            <div class="notifications-header">
+                <h3>{{ instance.title }}</h3>
+                {% if unread_count > 0 %}
+                    <button class="mark-all-read" aria-label="Mark all as read">Mark all as read</button>
+                {% endif %}
+            </div>
+            
+            <div class="notifications-list">
+                {% for notification in notifications %}
+                    <div class="notification-item {% if not notification.is_read %}unread{% endif %}" 
+                         data-notification-id="{{ notification.id }}">
+                        <div class="notification-content">
+                            <p class="notification-message">{{ notification.message }}</p>
+                            <div class="notification-meta">
+                                <span class="notification-category {{ notification.category_key }}">{{ notification.category }}</span>
+                                <span class="notification-time">{{ notification.timestamp|date:"M d, H:i" }}</span>
+                            </div>
+                        </div>
+                        {% if not notification.is_read %}
+                            <button class="mark-read" aria-label="Mark as read">✓</button>
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div class="no-notifications">
+                        <p>No notifications</p>
+                    </div>
+                {% endfor %}
+            </div>
+            
+            <div class="notifications-footer">
+                <a href="#" class="view-all">View all notifications</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -75,7 +75,7 @@ INSTALLED_APPS = [
     "djangocms_frontend.contrib.media",
     "djangocms_frontend.contrib.navigation",
     "djangocms_frontend.contrib.tabs",
-    "djangocms_frontend.contrib.utilities",
+    "djangocms_frontend.contrib.utilities"
 ]
 
 MIDDLEWARE = [
@@ -123,6 +123,15 @@ THUMBNAIL_PROCESSORS = (
     "filer.thumbnail_processors.scale_and_crop_with_subject_location",
     "easy_thumbnails.processors.filters",
 )
+
+# Channels configuration
+ASGI_APPLICATION = "school_management.asgi.application"
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 WSGI_APPLICATION = "school_management.wsgi.application"
 

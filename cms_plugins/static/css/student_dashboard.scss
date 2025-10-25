@@ -1,0 +1,318 @@
+@use 'theme/base/variables' as vars;
+@use 'theme/base/mixins' as mixins;
+
+.student-dashboard {
+  padding: 2rem;
+  background-color: vars.$bg-primary;
+  border-radius: vars.$border-radius-lg;
+  box-shadow: vars.$shadow-md;
+  
+  .dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid vars.$border-primary;
+    
+    h2 {
+      @include mixins.heading-2;
+      margin: 0;
+      color: vars.$color-primary;
+    }
+    
+    .refresh-btn {
+      @include mixins.button-base;
+      background-color: vars.$color-accent;
+      color: vars.$bg-primary;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all vars.$transition-fast;
+      
+      &:hover {
+        background-color: vars.$color-primary;
+        transform: rotate(90deg);
+      }
+      
+      .refresh-icon {
+        font-size: 1.5rem;
+      }
+    }
+  }
+  
+  .dashboard-content {
+    .dashboard-card {
+      background-color: vars.$bg-primary;
+      border-radius: vars.$border-radius-md;
+      box-shadow: vars.$shadow-sm;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      transition: all vars.$transition-fast;
+      
+      &:hover {
+        box-shadow: vars.$shadow-md;
+        transform: translateY(-2px);
+      }
+      
+      h3 {
+        @include mixins.heading-3;
+        margin-top: 0;
+        color: vars.$color-primary;
+        border-bottom: 1px solid vars.$border-secondary;
+        padding-bottom: 0.5rem;
+      }
+      
+      h4 {
+        @include mixins.heading-4;
+        margin-top: 0;
+        color: vars.$color-text-primary;
+      }
+    }
+    
+    .student-info {
+      .student-details {
+        p {
+          @include mixins.body-text;
+          margin: 0.5rem 0;
+          
+          strong {
+            color: vars.$color-primary;
+          }
+        }
+      }
+    }
+    
+    .attendance-summary {
+      .attendance-percentage {
+        text-align: center;
+        
+        .percentage {
+          @include mixins.heading-1;
+          color: vars.$color-primary;
+          display: block;
+          margin-bottom: 1rem;
+        }
+        
+        .attendance-bar {
+          height: 20px;
+          background-color: vars.$color-secondary;
+          border-radius: vars.$border-radius-full;
+          overflow: hidden;
+          position: relative;
+          
+          .attendance-fill {
+            height: 100%;
+            background-color: vars.$color-success;
+            border-radius: vars.$border-radius-full;
+            width: 0;
+            transition: width 1s ease-in-out;
+          }
+        }
+      }
+    }
+    
+    .dashboard-section {
+      margin-bottom: 2rem;
+      
+      h3 {
+        @include mixins.heading-3;
+        color: vars.$color-primary;
+        margin-bottom: 1rem;
+      }
+      
+      .courses-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        
+        .course-card {
+          .instructor {
+            @include mixins.body-text;
+            color: vars.$color-text-secondary;
+            margin: 0.5rem 0;
+          }
+          
+          .progress-container,
+          .attendance-container {
+            margin: 1rem 0;
+            
+            span {
+              @include mixins.small-text;
+              display: block;
+              margin-bottom: 0.5rem;
+              color: vars.$color-text-primary;
+            }
+            
+            .progress-bar,
+            .attendance-bar {
+              height: 10px;
+              background-color: vars.$color-secondary;
+              border-radius: vars.$border-radius-full;
+              overflow: hidden;
+              position: relative;
+              
+              .progress-fill,
+              .attendance-fill {
+                height: 100%;
+                border-radius: vars.$border-radius-full;
+                width: 0;
+                transition: width 1s ease-in-out;
+              }
+            }
+            
+            .progress-bar .progress-fill {
+              background-color: vars.$color-accent;
+            }
+            
+            .attendance-bar .attendance-fill {
+              background-color: vars.$color-success;
+            }
+          }
+        }
+      }
+      
+      .grades-list {
+        .grade-item {
+          margin-bottom: 1rem;
+          
+          .grade-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            
+            h4 {
+              margin: 0;
+              flex: 1;
+            }
+            
+            .grade-badge {
+              @include mixins.button-base;
+              padding: 0.25rem 0.75rem;
+              border-radius: vars.$border-radius-full;
+              font-weight: vars.$font-weight-bold;
+              font-size: vars.$font-size-sm;
+              
+              &.grade-A,
+              &.grade-A-plus,
+              &.grade-A-minus {
+                background-color: vars.$color-success;
+                color: vars.$bg-primary;
+              }
+              
+              &.grade-B,
+              &.grade-B-plus,
+              &.grade-B-minus {
+                background-color: vars.$color-accent;
+                color: vars.$bg-primary;
+              }
+              
+              &.grade-C,
+              &.grade-C-plus,
+              &.grade-C-minus {
+                background-color: vars.$color-warning;
+                color: vars.$bg-primary;
+              }
+              
+              &.grade-D,
+              &.grade-D-plus,
+              &.grade-D-minus,
+              &.grade-F {
+                background-color: vars.$color-danger;
+                color: vars.$bg-primary;
+              }
+            }
+          }
+          
+          .grade-date {
+            @include mixins.small-text;
+            color: vars.$color-text-secondary;
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+  
+  .loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: vars.$border-radius-lg;
+    z-index: 10;
+    
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid vars.$color-secondary;
+      border-top: 5px solid vars.$color-primary;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      @include mixins.body-text;
+      color: vars.$color-primary;
+      font-weight: vars.$font-weight-semibold;
+    }
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments */
+@media (max-width: vars.$breakpoint-tablet) {
+  .student-dashboard {
+    padding: 1.5rem;
+    
+    .dashboard-content {
+      .dashboard-section {
+        .courses-grid {
+          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: vars.$breakpoint-mobile) {
+  .student-dashboard {
+    padding: 1rem;
+    
+    .dashboard-header {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      .refresh-btn {
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+      }
+    }
+    
+    .dashboard-content {
+      .dashboard-section {
+        .courses-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    }
+  }
+}

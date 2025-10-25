@@ -1,0 +1,228 @@
+@use 'theme/base/variables' as vars;
+@use 'theme/base/mixins' as mixins;
+
+.live-notifications {
+  position: relative;
+  display: inline-block;
+  
+  .notifications-dropdown {
+    position: relative;
+    
+    .notifications-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      padding: 0.5rem;
+      font-size: 1.5rem;
+      color: vars.$color-text-primary;
+      transition: color vars.$transition-fast;
+      
+      &:hover {
+        color: vars.$color-primary;
+      }
+      
+      .bell-icon {
+        display: block;
+      }
+      
+      .unread-count {
+        position: absolute;
+        top: 0;
+        right: 0;
+        background-color: vars.$color-danger;
+        color: vars.$bg-primary;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: vars.$font-weight-bold;
+      }
+    }
+    
+    .notifications-panel {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      width: 350px;
+      background-color: vars.$bg-primary;
+      border-radius: vars.$border-radius-md;
+      box-shadow: vars.$shadow-lg;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all vars.$transition-fast;
+      
+      &.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      
+      .notifications-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        border-bottom: 1px solid vars.$border-primary;
+        
+        h3 {
+          @include mixins.heading-4;
+          margin: 0;
+          color: vars.$color-primary;
+        }
+        
+        .mark-all-read {
+          @include mixins.button-base;
+          background: none;
+          border: none;
+          color: vars.$color-accent;
+          font-size: vars.$font-size-sm;
+          padding: 0.25rem 0.5rem;
+          
+          &:hover {
+            color: vars.$color-primary;
+            text-decoration: underline;
+          }
+        }
+      }
+      
+      .notifications-list {
+        max-height: 300px;
+        overflow-y: auto;
+        
+        .notification-item {
+          display: flex;
+          align-items: flex-start;
+          padding: 1rem;
+          border-bottom: 1px solid vars.$border-secondary;
+          transition: background-color vars.$transition-fast;
+          
+          &:last-child {
+            border-bottom: none;
+          }
+          
+          &:hover {
+            background-color: vars.$color-secondary;
+          }
+          
+          &.unread {
+            background-color: rgba(vars.$color-accent, 0.1);
+            
+            &:hover {
+              background-color: rgba(vars.$color-accent, 0.2);
+            }
+          }
+          
+          .notification-content {
+            flex: 1;
+            
+            .notification-message {
+              @include mixins.body-text;
+              margin: 0 0 0.5rem 0;
+              font-size: vars.$font-size-sm;
+            }
+            
+            .notification-meta {
+              display: flex;
+              justify-content: space-between;
+              
+              .notification-category {
+                @include mixins.small-text;
+                padding: 0.125rem 0.5rem;
+                border-radius: vars.$border-radius-full;
+                font-weight: vars.$font-weight-medium;
+                
+                &.announcement {
+                  background-color: rgba(vars.$color-info, 0.2);
+                  color: vars.$color-info;
+                }
+                
+                &.grade {
+                  background-color: rgba(vars.$color-success, 0.2);
+                  color: vars.$color-success;
+                }
+                
+                &.event {
+                  background-color: rgba(vars.$color-accent, 0.2);
+                  color: vars.$color-accent;
+                }
+                
+                &.system {
+                  background-color: rgba(vars.$color-primary, 0.2);
+                  color: vars.$color-primary;
+                }
+              }
+              
+              .notification-time {
+                @include mixins.small-text;
+                color: vars.$color-text-secondary;
+              }
+            }
+          }
+          
+          .mark-read {
+            @include mixins.button-base;
+            background: none;
+            border: none;
+            color: vars.$color-success;
+            font-size: 1rem;
+            padding: 0.25rem;
+            margin-left: 0.5rem;
+            
+            &:hover {
+              color: vars.$color-primary;
+            }
+          }
+        }
+        
+        .no-notifications {
+          text-align: center;
+          padding: 2rem;
+          
+          p {
+            @include mixins.body-text;
+            color: vars.$color-text-secondary;
+            margin: 0;
+          }
+        }
+      }
+      
+      .notifications-footer {
+        padding: 0.75rem 1rem;
+        text-align: center;
+        border-top: 1px solid vars.$border-primary;
+        
+        .view-all {
+          @include mixins.small-text;
+          color: vars.$color-primary;
+          text-decoration: none;
+          
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: vars.$breakpoint-mobile) {
+  .live-notifications {
+    .notifications-dropdown {
+      .notifications-panel {
+        width: 300px;
+        right: -50px; // Adjust position on mobile
+        
+        .notifications-list {
+          max-height: 250px;
+        }
+      }
+    }
+  }
+}

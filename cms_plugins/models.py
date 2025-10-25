@@ -88,6 +88,251 @@ class Course(models.Model):
     def __str__(self) -> str:
         return f"{self.code} - {self.title}"
 
+# Add the Student and Grade models
+class Student(models.Model):
+    """
+    Model representing a student in the system.
+    """
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    student_id = models.CharField(max_length=20, unique=True)
+    email = models.EmailField()
+    date_of_birth = models.DateField()
+    enrollment_date = models.DateField()
+    is_active: bool = models.BooleanField(default=True)  # type: ignore
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['last_name', 'first_name']
+        verbose_name = "Student"
+        verbose_name_plural = "Students"
+    
+    def __str__(self) -> str:
+        return f"{self.first_name} {self.last_name} ({self.student_id})"
+    
+    @property
+    def full_name(self) -> str:
+        return f"{self.first_name} {self.last_name}"
+
+class Grade(models.Model):
+    """
+    Model representing a student's grade for a course.
+    """
+    GRADE_CHOICES = [
+        ('A+', 'A+'), ('A', 'A'), ('A-', 'A-'),
+        ('B+', 'B+'), ('B', 'B'), ('B-', 'B-'),
+        ('C+', 'C+'), ('C', 'C'), ('C-', 'C-'),
+        ('D+', 'D+'), ('D', 'D'), ('D-', 'D-'),
+        ('F', 'F'),
+    ]
+    
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    grade = models.CharField(max_length=2, choices=GRADE_CHOICES)
+    date_recorded = models.DateField(auto_now_add=True)
+    semester = models.CharField(max_length=20, help_text="e.g., 'Fall 2023', 'Spring 2024'")
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['-date_recorded']
+        unique_together = ['student', 'course']
+        verbose_name = "Grade"
+        verbose_name_plural = "Grades"
+    
+    def __str__(self) -> str:
+        return f"{self.student} - {self.course} - {self.grade}"
+
+class Enrollment(models.Model):
+    """
+    Model representing a student's enrollment in a course.
+    """
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    enrollment_date = models.DateField(auto_now_add=True)
+    is_active: bool = models.BooleanField(default=True)  # type: ignore
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['-enrollment_date']
+        unique_together = ['student', 'course']
+        verbose_name = "Enrollment"
+        verbose_name_plural = "Enrollments"
+    
+    def __str__(self) -> str:
+        return f"{self.student} enrolled in {self.course}"
+
+class Attendance(models.Model):
+    """
+    Model representing a student's attendance record for a course.
+    """
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    date = models.DateField()
+    is_present: bool = models.BooleanField(default=True)  # type: ignore
+    is_excused: bool = models.BooleanField(default=False)  # type: ignore
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['-date']
+        unique_together = ['student', 'course', 'date']
+        verbose_name = "Attendance"
+        verbose_name_plural = "Attendance Records"
+    
+    def __str__(self) -> str:
+        status = "Present" if self.is_present else "Absent"
+        if self.is_excused:
+            status += " (Excused)"
+        return f"{self.student} - {self.course} - {self.date} - {status}"
+
+class StudentDashboardPlugin(CMSPlugin):
+    """
+    A plugin to display personalized student information including:
+    - Enrolled courses
+    - Attendance percentage
+    - Recent grades
+    """
+    title = models.CharField(max_length=200, default="My Dashboard")
+    
+    def __str__(self) -> str:
+        return str(self.title)
+    
+    def get_student_data(self, student_id=None):
+        """
+        Fetch student data for the dashboard.
+        In a real implementation, this would likely get the student ID from the session
+        or request context. For now, we'll return sample data or data for a specific student.
+        """
+        from django.core.cache import cache
+        from django.db.models import Count, Q
+        from django.utils import timezone
+        
+        # Create a cache key
+        cache_key = f"student_dashboard_{student_id or 'sample'}"
+        
+        # Try to get data from cache
+        cached_data = cache.get(cache_key)
+        if cached_data:
+            return cached_data
+        
+        # If no student_id provided, return empty data
+        if not student_id:
+            data = {
+                'student': {
+                    'name': '',
+                    'student_id': '',
+                    'email': ''
+                },
+                'enrolled_courses': [],
+                'attendance_percentage': 0,
+                'recent_grades': []
+            }
+        else:
+            try:
+                # Get the student
+                student = Student.objects.get(student_id=student_id)
+                
+                # Get enrolled courses
+                enrollments = Enrollment.objects.filter(
+                    student=student, 
+                    is_active=True
+                ).select_related('course')
+                
+                enrolled_courses = []
+                total_attendance = 0
+                attendance_count = 0
+                
+                for enrollment in enrollments:
+                    # Calculate progress (simplified)
+                    progress = 50  # This would be calculated based on actual course progress
+                    
+                    # Calculate attendance percentage for this course
+                    total_records = Attendance.objects.filter(
+                        student=student,
+                        course=enrollment.course
+                    ).count()
+                    
+                    if total_records > 0:
+                        present_records = Attendance.objects.filter(
+                            student=student,
+                            course=enrollment.course,
+                            is_present=True
+                        ).count()
+                        
+                        course_attendance = (present_records / total_records) * 100
+                        total_attendance += course_attendance
+                        attendance_count += 1
+                    else:
+                        course_attendance = 0
+                    
+                    enrolled_courses.append({
+                        'id': enrollment.course.id,
+                        'title': enrollment.course.title,
+                        'code': enrollment.course.code,
+                        'instructor': enrollment.course.instructor,
+                        'progress': progress,
+                        'attendance': round(course_attendance, 1)
+                    })
+                
+                # Calculate overall attendance percentage
+                if attendance_count > 0:
+                    attendance_percentage = total_attendance / attendance_count
+                else:
+                    attendance_percentage = 0
+                
+                # Get recent grades (last 5)
+                recent_grades = []
+                grades = Grade.objects.filter(
+                    student=student
+                ).select_related('course').order_by('-date_recorded')[:5]
+                
+                for grade in grades:
+                    recent_grades.append({
+                        'course': grade.course.title,
+                        'course_code': grade.course.code,
+                        'grade': grade.grade,
+                        'date': grade.date_recorded.strftime('%Y-%m-%d')
+                    })
+                
+                data = {
+                    'student': {
+                        'name': student.full_name,
+                        'student_id': student.student_id,
+                        'email': student.email
+                    },
+                    'enrolled_courses': enrolled_courses,
+                    'attendance_percentage': round(attendance_percentage, 1),
+                    'recent_grades': recent_grades
+                }
+            except Exception:
+                # Return empty data if student not found or any other error
+                data = {
+                    'student': {
+                        'name': '',
+                        'student_id': '',
+                        'email': ''
+                    },
+                    'enrolled_courses': [],
+                    'attendance_percentage': 0,
+                    'recent_grades': []
+                }
+        
+        # Cache the data for 10 minutes
+        cache.set(cache_key, data, 600)  # 600 seconds = 10 minutes
+        
+        return data
+
 class HeroBannerPlugin(CMSPlugin):
     title = models.CharField(max_length=200)
     subtitle = models.TextField(blank=True)
@@ -484,3 +729,207 @@ class NavbarItemChild(models.Model):
     
     def __str__(self) -> str:
         return str(self.title)
+
+class LiveNotification(models.Model):
+    """
+    Model representing a live notification for students.
+    """
+    CATEGORY_CHOICES = [
+        ('announcement', 'New Announcement'),
+        ('grade', 'Grade Released'),
+        ('event', 'Event Reminder'),
+        ('system', 'System Notification'),
+    ]
+    
+    message = models.TextField()
+    category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='system')
+    is_read = models.BooleanField(default=False)  # type: ignore
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name='notifications')
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['-timestamp']
+        verbose_name = "Live Notification"
+        verbose_name_plural = "Live Notifications"
+    
+    def __str__(self) -> str:
+        message_str = str(self.message)
+        return f"{message_str[:50]}..." if len(message_str) > 50 else message_str
+    
+    def mark_as_read(self) -> None:
+        """
+        Mark the notification as read.
+        """
+        self.is_read = True
+        self.save()
+
+class LiveNotificationsPlugin(CMSPlugin):
+    """
+    A plugin to display live notifications for students.
+    """
+    title = models.CharField(max_length=200, default="Notifications")
+    
+    def __str__(self) -> str:
+        return str(self.title)
+    
+    def get_unread_count(self, user) -> int:
+        """
+        Get the count of unread notifications for a user.
+        """
+        if user.is_authenticated:
+            return LiveNotification.objects.filter(user=user, is_read=False).count()
+        return 0
+    
+    def get_notifications(self, user, limit=10) -> list:
+        """
+        Get the latest notifications for a user.
+        """
+        if user.is_authenticated:
+            notifications = LiveNotification.objects.filter(user=user)[:limit]
+            return [
+                {
+                    'id': notification.id,
+                    'message': notification.message,
+                    'category': notification.get_category_display(),
+                    'category_key': notification.category,
+                    'is_read': notification.is_read,
+                    'timestamp': notification.timestamp.isoformat(),
+                }
+                for notification in notifications
+            ]
+        return []
+
+class PerformanceAnalyticsPlugin(CMSPlugin):
+    """
+    A plugin to display student performance analytics with charts.
+    """
+    title = models.CharField(max_length=200, default="Performance Analytics")
+    TIME_RANGE_CHOICES = [
+        ('week', 'Weekly'),
+        ('month', 'Monthly'),
+        ('semester', 'Semester'),
+    ]
+    default_time_range = models.CharField(
+        max_length=10, 
+        choices=TIME_RANGE_CHOICES, 
+        default='month',
+        help_text="Default time range for analytics"
+    )
+    
+    def __str__(self) -> str:
+        return str(self.title)
+    
+    def get_chart_data(self, user, time_range=None) -> dict:
+        """
+        Get aggregated performance data for charts.
+        """
+        if not user.is_authenticated:
+            return {}
+        
+        # Use default time range if none provided
+        if time_range is None:
+            time_range = self.default_time_range
+            
+        # Import here to avoid circular imports
+        from django.utils import timezone
+        from datetime import timedelta
+        from .models import Grade, Attendance, Student, Course, Enrollment
+        
+        try:
+            # Get the student record for this user
+            student = Student.objects.get(email=user.email)
+        except Student.DoesNotExist:  # type: ignore
+            # If no student record found, return empty data
+            return {
+                'academic_performance': [],
+                'attendance_rate': [],
+                'activity_trends': []
+            }
+        
+        # Calculate date range based on time_range
+        end_date = timezone.now().date()
+        if time_range == 'week':
+            start_date = end_date - timedelta(days=7)
+        elif time_range == 'month':
+            start_date = end_date - timedelta(days=30)
+        else:  # semester
+            start_date = end_date - timedelta(days=180)
+        
+        # Get academic performance data (grades over time)
+        grades = Grade.objects.filter(
+            student=student,
+            date_recorded__range=[start_date, end_date]
+        ).order_by('date_recorded')
+        
+        academic_performance = []
+        grade_points = {
+            'A+': 4.0, 'A': 4.0, 'A-': 3.7,
+            'B+': 3.3, 'B': 3.0, 'B-': 2.7,
+            'C+': 2.3, 'C': 2.0, 'C-': 1.7,
+            'D+': 1.3, 'D': 1.0, 'D-': 0.7,
+            'F': 0.0
+        }
+        
+        for grade in grades:
+            academic_performance.append({
+                'date': grade.date_recorded.isoformat(),
+                'course': grade.course.title,
+                'grade': grade.grade,
+                'points': grade_points.get(grade.grade, 0)
+            })
+        
+        # Get attendance data
+        enrollments = Enrollment.objects.filter(student=student)
+        course_ids = [e.course.id for e in enrollments]
+        
+        attendance_records = Attendance.objects.filter(
+            student=student,
+            course_id__in=course_ids,
+            date__range=[start_date, end_date]
+        )
+        
+        # Group attendance by date
+        attendance_by_date = {}
+        for record in attendance_records:
+            date_str = record.date.isoformat()
+            if date_str not in attendance_by_date:
+                attendance_by_date[date_str] = {'present': 0, 'total': 0}
+            attendance_by_date[date_str]['total'] += 1
+            if record.is_present:
+                attendance_by_date[date_str]['present'] += 1
+        
+        attendance_rate = []
+        for date, counts in attendance_by_date.items():
+            rate = (counts['present'] / counts['total']) * 100 if counts['total'] > 0 else 0
+            attendance_rate.append({
+                'date': date,
+                'rate': round(rate, 2),
+                'present': counts['present'],
+                'total': counts['total']
+            })
+        
+        # Activity trends (number of activities per day)
+        # For simplicity, we'll use grades and attendance as activities
+        activity_trends = []
+        all_dates = set()
+        all_dates.update([g.date_recorded.isoformat() for g in grades])
+        all_dates.update([a.date.isoformat() for a in attendance_records])
+        
+        for date in sorted(all_dates):
+            grade_count = len([g for g in grades if g.date_recorded.isoformat() == date])
+            attendance_count = len([a for a in attendance_records if a.date.isoformat() == date])
+            activity_trends.append({
+                'date': date,
+                'activities': grade_count + attendance_count
+            })
+        
+        return {
+            'academic_performance': academic_performance,
+            'attendance_rate': attendance_rate,
+            'activity_trends': activity_trends,
+            'time_range': time_range
+        }
