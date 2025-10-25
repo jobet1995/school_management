@@ -40,9 +40,32 @@
         $(document).on('mouseleave', '.cta-button', function() {
             $(this).removeClass('hover');
         });
+        
+        // Add parallax effect to background
+        $(window).on('scroll', function() {
+            $('.cta-banner').each(function() {
+                const scrolled = $(window).scrollTop();
+                const banner = $(this);
+                const scrollSpeed = 0.5;
+                
+                // Only apply parallax if banner is in viewport
+                if (isElementInViewport(banner)) {
+                    const yPos = -(scrolled * scrollSpeed);
+                    banner.css('background-position', 'center ' + yPos + 'px');
+                }
+            });
+        });
     });
 
     function initializeCTABanner(banner) {
+        // Set background color if no image is provided
+        if (!banner.css('background-image') || banner.css('background-image') === 'none') {
+            const backgroundColor = banner.data('background-color');
+            if (backgroundColor) {
+                banner.css('background-color', backgroundColor);
+            }
+        }
+        
         // Add fade-in animation when section comes into view
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -56,5 +79,30 @@
         });
         
         observer.observe(banner[0]);
+        
+        // Add subtle animation to heading and subheading
+        const heading = banner.find('.cta-heading');
+        const subheading = banner.find('.cta-subheading');
+        
+        if (heading.length) {
+            setTimeout(() => {
+                heading.addClass('animated');
+            }, 300);
+        }
+        
+        if (subheading.length) {
+            setTimeout(() => {
+                subheading.addClass('animated');
+            }, 600);
+        }
+    }
+    
+    // Helper function to check if element is in viewport
+    function isElementInViewport(element) {
+        const rect = element[0].getBoundingClientRect();
+        return (
+            rect.top <= $(window).height() &&
+            rect.bottom >= 0
+        );
     }
 })(django.jQuery);

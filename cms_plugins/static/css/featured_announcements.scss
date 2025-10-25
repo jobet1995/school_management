@@ -1,3 +1,6 @@
+@use 'theme/base/variables' as vars;
+@use 'theme/base/mixins' as mixins;
+
 .featured-announcements {
   padding: 20px;
   background-color: #f8f9fa;

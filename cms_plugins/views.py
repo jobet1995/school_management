@@ -1,11 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+from django.views.generic import View
 from django.http import JsonResponse
+from django.utils import dateformat
+from django.utils import timezone
+from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from django.views import View
-from django.shortcuts import get_object_or_404
-from django.db.models import Q
-from .models import FeaturedAnnouncementsPlugin, UpcomingEventsPlugin, Course, StatisticsCounterPlugin, StatisticsCounterItem
+
+from .models import (
+    Announcement, 
+    Event, 
+    Course, 
+    FeaturedAnnouncementsPlugin, 
+    UpcomingEventsPlugin,
+    StatisticsCounterPlugin,
+    StatisticsCounterItem
+)
 
 # Create your views here.
 
@@ -158,52 +168,3 @@ class CourseSearchAjaxView(View):
                 'success': False,
                 'error': str(e)
             }, status=500)
-
-def course_search_demo(request):
-    """
-    Demo view for course search functionality
-    """
-    return render(request, 'course_search.html')
-
-def statistics_counter_demo(request):
-    """
-    Demo view for statistics counter functionality
-    """
-    # Get the first statistics counter plugin
-    plugin = StatisticsCounterPlugin.objects.first()
-    if not plugin:
-        # Create a demo plugin if none exists
-        plugin = StatisticsCounterPlugin()
-        plugin.save()
-        
-        # Create sample counters
-        sample_counters = [
-            {'label': 'Students', 'value': 5000, 'icon': 'fa fa-users'},
-            {'label': 'Faculty', 'value': 300, 'icon': 'fa fa-graduation-cap'},
-            {'label': 'Courses', 'value': 200, 'icon': 'fa fa-book'},
-            {'label': 'Graduation Rate', 'value': 95, 'icon': 'fa fa-trophy'},
-        ]
-        
-        for counter_data in sample_counters:
-            counter = StatisticsCounterItem(
-                statistics_counter_plugin=plugin,
-                label=counter_data['label'],
-                value=counter_data['value'],
-                icon=counter_data['icon']
-            )
-            counter.save()
-    
-    counters = StatisticsCounterItem.objects.filter(statistics_counter_plugin=plugin)
-    return render(request, 'statistics_counter_demo.html', {'counters': counters})
-
-def cta_banner_demo(request):
-    """
-    Demo view for CTA banner functionality
-    """
-    return render(request, 'cta_banner_demo.html')
-
-def loading_spinner_demo(request):
-    """
-    Demo view for loading spinner functionality
-    """
-    return render(request, 'loading_spinner_demo.html')

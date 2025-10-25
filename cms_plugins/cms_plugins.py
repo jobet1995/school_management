@@ -4,7 +4,23 @@ from django.utils.translation import gettext_lazy as _
 from django.templatetags.static import static
 from django.contrib import admin
 
-from .models import HeroBannerPlugin, FeaturedAnnouncementsPlugin, UpcomingEventsPlugin, WelcomeSectionPlugin, QuickLinksPlugin, QuickLinkItem, StatisticsCounterPlugin, StatisticsCounterItem, TestimonialPlugin, TestimonialItem, CTABannerPlugin, CourseSearchPlugin
+from .models import (
+    HeroBannerPlugin, 
+    FeaturedAnnouncementsPlugin, 
+    UpcomingEventsPlugin, 
+    WelcomeSectionPlugin, 
+    QuickLinksPlugin, 
+    QuickLinkItem, 
+    StatisticsCounterPlugin, 
+    StatisticsCounterItem, 
+    TestimonialPlugin, 
+    TestimonialItem, 
+    CTABannerPlugin, 
+    CourseSearchPlugin,
+    NavbarPlugin,
+    NavbarItem,
+    NavbarItemChild
+)
 
 
 class QuickLinkItemInline(admin.StackedInline):
@@ -23,6 +39,33 @@ class TestimonialItemInline(admin.StackedInline):
     model = TestimonialItem
     extra = 1
     fields = ('name', 'photo', 'course', 'testimonial', 'is_featured')
+
+
+class NavbarItemChildInline(admin.StackedInline):
+    model = NavbarItemChild
+    extra = 1
+    fields = ('title', 'url', 'order')
+
+
+class NavbarItemInline(admin.StackedInline):
+    model = NavbarItem
+    extra = 1
+    fields = ('title', 'url', 'order', 'is_active')
+    inlines = [NavbarItemChildInline]
+
+
+@plugin_pool.register_plugin
+class NavbarPluginPublisher(CMSPluginBase):
+    model = NavbarPlugin
+    name = _("Navbar Plugin")
+    render_template = "navbar_plugin.html"
+    cache = False
+    inlines = [NavbarItemInline]
+    
+    def render(self, context, instance, placeholder):
+        context = super().render(context, instance, placeholder)
+        context['menu_items'] = instance.get_menu_items()
+        return context
 
 
 @plugin_pool.register_plugin

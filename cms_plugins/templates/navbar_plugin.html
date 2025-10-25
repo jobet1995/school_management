@@ -1,0 +1,39 @@
+{% load static %}
+<nav class="navbar">
+    <div class="navbar-container">
+        <a class="navbar-brand" href="{{ instance.brand_link }}">
+            <span>{{ instance.brand_text }}</span>
+        </a>
+        
+        <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <div class="navbar-collapse">
+            <ul class="navbar-nav">
+                {% for item in menu_items %}
+                    {% if item.get_children %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="{{ item.url|default:'#' }}" role="button" {% if item.is_active %}aria-current="page"{% endif %}>
+                                {{ item.title }}
+                            </a>
+                            <ul class="dropdown-menu">
+                                {% for child in item.get_children %}
+                                    <li><a class="dropdown-item" href="{{ child.url }}">{{ child.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if item.is_active %}active{% endif %}" href="{{ item.url }}" {% if item.is_active %}aria-current="page"{% endif %}>
+                                {{ item.title }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</nav>

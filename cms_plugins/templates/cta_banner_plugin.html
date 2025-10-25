@@ -4,17 +4,18 @@
 <div class="cta-banner" 
      {% if instance.background_image %}
      style="background-image: url('{{ instance.background_image.url }}');"
-     {% else %}
-     style="background-color: {{ instance.background_color }};"
      {% endif %}
-     data-plugin-id="{{ instance.id }}">
+     data-plugin-id="{{ instance.id }}"
+     data-background-color="{{ instance.background_color|default:'#007bff' }}"
+     role="banner"
+     aria-labelledby="cta-heading-{{ instance.id }}">
     <div class="cta-banner-content">
-        <h2 class="cta-heading">{{ instance.heading }}</h2>
+        <h2 class="cta-heading" id="cta-heading-{{ instance.id }}">{{ instance.heading }}</h2>
         {% if instance.subheading %}
             <p class="cta-subheading">{{ instance.subheading }}</p>
         {% endif %}
         {% if instance.cta_text and instance.cta_link %}
-            <a href="{{ instance.cta_link }}" class="cta-button">{{ instance.cta_text }}</a>
+            <a href="{{ instance.cta_link }}" class="cta-button btn btn-primary">{{ instance.cta_text }}</a>
         {% endif %}
     </div>
 </div>

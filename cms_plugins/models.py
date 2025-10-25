@@ -405,3 +405,82 @@ class CourseSearchPlugin(CMSPlugin):
     
     def __str__(self) -> str:
         return str(self.title)
+
+class NavbarPlugin(CMSPlugin):
+    """
+    A plugin for editable navigation bar.
+    """
+    brand_text = models.CharField(max_length=200, default="Student Management System")
+    brand_link = models.CharField(max_length=200, default="/", help_text="URL for the brand/logo link")
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    def __str__(self) -> str:
+        return str(self.brand_text)
+
+    def get_menu_items(self):
+        """
+        Returns menu items for the navbar.
+        """
+        if TYPE_CHECKING:
+            # This is just for type checking
+            return []
+        else:
+            # In runtime, we can access the related manager
+            return NavbarItem.objects.filter(navbar_plugin=self).order_by('order')
+
+class NavbarItem(models.Model):
+    """
+    Individual menu items for the navbar.
+    """
+    navbar_plugin = models.ForeignKey(NavbarPlugin, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    url = models.CharField(max_length=200, blank=True, help_text="URL for the menu item (leave blank for dropdown)")
+    order: int = models.PositiveIntegerField(default=0, help_text="Order of the item in the navbar")  # type: ignore
+    is_active: bool = models.BooleanField(default=False, help_text="Mark as active item")  # type: ignore
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name = "Navbar Item"
+        verbose_name_plural = "Navbar Items"
+    
+    def __str__(self) -> str:
+        return str(self.title)
+
+    def get_children(self):
+        """
+        Returns child menu items (for dropdowns).
+        """
+        if TYPE_CHECKING:
+            # This is just for type checking
+            return []
+        else:
+            # In runtime, we can access the related manager
+            return NavbarItemChild.objects.filter(parent=self).order_by('order')
+
+class NavbarItemChild(models.Model):
+    """
+    Child menu items for dropdowns in the navbar.
+    """
+    parent = models.ForeignKey(NavbarItem, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    url = models.CharField(max_length=200)
+    order: int = models.PositiveIntegerField(default=0)  # type: ignore
+    
+    # Type annotation for the objects manager to help type checkers
+    if TYPE_CHECKING:
+        objects: 'Manager'
+    
+    class Meta:
+        ordering = ['order']
+        verbose_name = "Navbar Child Item"
+        verbose_name_plural = "Navbar Child Items"
+    
+    def __str__(self) -> str:
+        return str(self.title)

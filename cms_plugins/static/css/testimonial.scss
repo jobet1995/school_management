@@ -1,3 +1,6 @@
+@use 'theme/base/variables' as vars;
+@use 'theme/base/mixins' as mixins;
+
 .testimonial-container {
   padding: 2rem 0;
   max-width: 1200px;
